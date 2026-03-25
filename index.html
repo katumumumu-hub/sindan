@@ -7,11 +7,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="恋愛タイプ診断">
-    <link rel="apple-touch-icon" href="https://i.ibb.co/k5vH0fH/image-9.png">
+    <link rel="apple-touch-icon" href="guardian.jpg">
 
     <title>【深層心理】あなたの恋愛タイプ診断</title>
     <style>
-        /* --- CSS: アプリっぽいUIとフォトリアルな背景 --- */
         :root {
             --primary-color: #ff6b6b;
             --secondary-color: #4ecdc4;
@@ -25,7 +24,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            -webkit-tap-highlight-color: transparent; /* タップ時の青い枠を消す */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -36,7 +35,7 @@
             width: 100%;
         }
 
-        /* 全画面背景用のコンテナ - dvhでiPhoneのバーに対応 */
+        /* iPhoneのアドレスバーに対応した高さ設定 */
         #app-container {
             width: 100vw;
             height: 100dvh; 
@@ -153,7 +152,7 @@
 
         .restart-btn {
             background-color: var(--primary-color);
-            color: white; /* 修正済み */
+            color: white;
             border: none;
             padding: 15px 40px;
             border-radius: 30px;
@@ -229,12 +228,13 @@
             { q: "診断終了。今の気分は？", a: "「早く結果が見たい！」", b: "「本当に当たるのかな？」", c: "「終わるのが名残惜しい」" }
         ];
 
+        // 画像URLをアップロードしたjpgファイル名に変更
         const resultsData = {
-            burning: { title: "【全開！バーニング・ラブ型】", desc: "恋愛＝人生のガソリン。直感と情熱で突き進むタイプ。一目惚れしやすく、駆け引きよりもストレートな勝負を好みます。", image: "https://i.ibb.co/3Wqj1s0/image-8.png", overlay: "rgba(255, 245, 240, 0.85)" },
-            guardian: { title: "【安心のガーディアン型】", desc: "恋愛＝心の安全基地。信頼を重んじるタイプ。じっくり相手を知ってから好きになります。一度付き合うと非常に長く続きます。", image: "https://i.ibb.co/k5vH0fH/image-9.png", overlay: "rgba(255, 252, 245, 0.85)" },
-            nomad: { title: "【孤高のノマド・スタイル型】", desc: "恋愛＝人生のスパイス。自分の世界を一番大切にするタイプ。束縛を嫌い、ミステリアスな魅力で相手を翻弄します。", image: "https://i.ibb.co/jH0N8jX/image-10.png", overlay: "rgba(240, 245, 255, 0.85)" },
-            profiler: { title: "【知的なプロファイラー型】", desc: "恋愛＝高度な心理戦。相手を観察し、最適解を探すタイプ。感情に流されず、スマートな大人の恋愛を楽しみます。", image: "https://i.ibb.co/68038mB/image-11.png", overlay: "rgba(245, 255, 252, 0.85)" },
-            trickster: { title: "【変幻自在のトリックスター型】", desc: "恋愛＝予測不能な冒険。相手によって自分のキャラが変わるタイプ。掴みどころがなく、常に新しい刺激を求める冒険家です。", image: "https://i.ibb.co/v3X2Fh9/image-12.png", overlay: "rgba(255, 240, 255, 0.85)" }
+            burning: { title: "【全開！バーニング・ラブ型】", desc: "恋愛＝人生のガソリン。直感と情熱で突き進むタイプ。一目惚れしやすく、駆け引きよりもストレートな勝負を好みます。", image: "burning.jpg", overlay: "rgba(255, 245, 240, 0.85)" },
+            guardian: { title: "【安心のガーディアン型】", desc: "恋愛＝心の安全基地。信頼を重んじるタイプ。じっくり相手を知ってから好きになります。一度付き合うと非常に長く続きます。", image: "guardian.jpg", overlay: "rgba(255, 252, 245, 0.85)" },
+            nomad: { title: "【孤高のノマド・スタイル型】", desc: "恋愛＝人生のスパイス。自分の世界を一番大切にするタイプ。束縛を嫌い、ミステリアスな魅力で相手を翻弄します。", image: "nomad.jpg", overlay: "rgba(240, 245, 255, 0.85)" },
+            profiler: { title: "【知的なプロファイラー型】", desc: "恋愛＝高度な心理戦。相手を観察し、最適解を探すタイプ。感情に流されず、スマートな大人の恋愛を楽しみます。", image: "profiler.jpg", overlay: "rgba(245, 255, 252, 0.85)" },
+            trickster: { title: "【変幻自在のトリックスター型】", desc: "恋愛＝予測不能な冒険。相手によって自分のキャラが変わるタイプ。掴みどころがなく、常に新しい刺激を求める冒険家です。", image: "trickster.jpg", overlay: "rgba(255, 240, 255, 0.85)" }
         };
 
         let currentStep = 0;
