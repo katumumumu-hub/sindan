@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="前世現実職診断">
+    <link rel="apple-touch-icon" href="past_icon.jpg">
+
+    <title>【精密】あなたの前世の現実職業診断</title>
+    <style>
+        :root {
+            --primary-color: #3e2723;
+            --secondary-color: #a1887f;
+            --accent-color: #d4af37;
+            --text-color: #333;
+            --bg-overlay: rgba(255, 255, 255, 0.88);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hiragino Mincho ProN', 'MS Mincho', serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f4f1ea;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        #app-container {
+            width: 100vw;
+            height: 100dvh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+            position: relative;
+        }
+
+        #app-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-overlay);
+            z-index: 1;
+        }
+
+        #content {
+            position: relative;
+            z-index: 2;
+            width: 92%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        h1 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            min-height: 3rem;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .option-btn:active {
+            background-color: #fdf5e6;
+            border-color: var(--accent-color);
+            transform: scale(0.98);
+        }
+
+        #progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background-color: #eee;
+            z-index: 3;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            color: #5d4037;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .result-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #d4af37;
+        }
+
+        .result-desc {
+            font-size: 0.9rem;
+            text-align: left;
+            margin-bottom: 20px;
+            background: #fafafa;
+            padding: 15px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .restart-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .hidden { display: none !important; }
+        @keyframes spin { 100% { transform:rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <div id="content">
+            <div id="splash-screen">
+                <h1>【魂の履歴書】<br>あなたの前世職業診断</h1>
+                <p style="margin-bottom: 25px; font-size: 0.9rem; color: #666;">
+                    現世でのあなたの「癖」や「好み」は、<br>
+                    かつて生きた時代の名残かもしれません。
+                </p>
+                <button class="restart-btn" onclick="startDiagnosis()">診断を開始する</button>
+            </div>
+
+            <div id="question-screen" class="hidden">
+                <p class="question-text" id="question-text"></p>
+                <div class="options-container">
+                    <button class="option-btn" onclick="answer('A')">A. <span id="optA-text"></span></button>
+                    <button class="option-btn" onclick="answer('B')">B. <span id="optB-text"></span></button>
+                    <button class="option-btn" onclick="answer('C')">C. <span id="optC-text"></span></button>
+                </div>
+            </div>
+
+            <div id="loading-screen" class="hidden">
+                <p class="question-text">前世の記憶を整理中...</p>
+                <div style="font-size: 3rem; animation: spin 2s linear infinite;">💠</div>
+            </div>
+
+            <div id="result-screen" class="hidden">
+                <p style="font-size: 0.8rem; color: #888;">Analysis Completed</p>
+                <p class="result-title" id="result-title"></p>
+                <img src="" alt="診断結果" class="result-image" id="result-image">
+                <p class="result-desc" id="result-desc"></p>
+                <button class="restart-btn" onclick="restart()">最初に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "新しい街に着いた時、まず気になるのは？", a: "街を治めている建物や象徴", b: "市場や商店の活気と値段", c: "路地裏の静かな雰囲気" },
+            { q: "仕事をする上で一番ストレスなのは？", a: "ルールが曖昧で統制がないこと", b: "計算が合わない、または損をすること", c: "創造性が発揮できないこと" },
+            { q: "人から相談を受けたとき、どう答える？", a: "「こうすべきだ」と正論で導く", b: "「損得」を考えて現実的に助言する", c: "「気持ち」に共感し、聞き役に回る" },
+            { q: "子供の頃、夢中になった遊びは？", a: "リーダーシップを取るごっこ遊び", b: "何かを収集したり交換したりする遊び", c: "一人で絵を描いたり何かを作る遊び" },
+            { q: "無人島に持っていくなら？", a: "身を守るための強固なナイフ", b: "火を起こし、調理するための道具", c: "暇をつぶすための筆記用具" },
+            { q: "あなたの机の上はどんな状態？", a: "常に整頓され、どこに何があるか分かる", b: "実用性重視で、よく使うものが並んでいる", c: "少し散らかっているが、自分なりの秩序がある" },
+            { q: "夜、ふと考え込んでしまうことは？", a: "社会の仕組みや正義について", b: "将来の蓄えや生活の安定について", c: "人生の意味や宇宙の広がりについて" },
+            { q: "買い物でのあなたのスタイルは？", a: "ブランドや品質を重視して長く使う", b: "コスパを徹底的に比較して選ぶ", c: "直感で「これだ！」と思ったものを買う" },
+            { q: "行列のできる店を見てどう思う？", a: "「並ぶ価値があるのか」冷静に分析する", b: "「儲かっているな」と経営を想像する", c: "「何か面白いことがありそう」とワクワクする" },
+            { q: "あなたが人生で最も避けたいのは？", a: "不名誉なこと、恥をかくこと", b: "無駄な努力、貧困に陥ること", c: "退屈な日常、自由を奪われること" }
+        ];
+
+        const resultsData = [
+            { id: "judge", title: "公正なる裁判官", desc: "前世のあなたは法と秩序を守る番人でした。現世でも正義感が強く、曲がったことが大嫌い。論理的で冷静な判断力は、かつての職務の名残です。", image: "judge.jpg", points: {A:4, B:1, C:0} },
+            { id: "merchant", title: "腕利きの豪商", desc: "前世のあなたは巨大な富を動かす商人でした。現世でも経済観念が発達しており、物の価値を見抜く天才です。交渉術や損得勘定に長けています。", image: "merchant.jpg", points: {A:1, B:4, C:0} },
+            { id: "painter", title: "宮廷お抱えの絵師", desc: "前世のあなたは美を追求する芸術家でした。現世でも色彩やデザインへのこだわりが強く、感性が非常に豊か。言葉にできない感情を表現する力を持っています。", image: "painter.jpg", points: {A:0, B:1, C:4} },
+            { id: "captain", title: "不屈の船長", desc: "前世のあなたは荒波を越える航海士でした。未知の世界への好奇心と、困難に立ち向かう勇気を持っています。決断力があり、チームを引っ張る力が備わっています。", image: "captain.jpg", points: {A:3, B:1, C:1} },
+            { id: "librarian", title: "知識の守護者（司書）", desc: "前世のあなたは膨大な書物を管理する学者でした。静かな環境で知識を深めることを好み、一度気になったことは徹底的に調べる凝り性な一面があります。", image: "librarian.jpg", points: {A:1, B:1, C:3} },
+            { id: "medic", title: "野戦病院の医師", desc: "前世のあなたは人命を救う医療従事者でした。切羽詰まった状況でも冷静に対応でき、人助けに喜びを感じます。他人の痛みに敏感な優しい心の持ち主です。", image: "medic.jpg", points: {A:2, B:2, C:1} },
+            { id: "blacksmith", title: "魂を打つ刀鍛冶", desc: "前世のあなたは、一筋の鉄を叩き上げる職人でした。一つのことを極める集中力があり、手先が器用。妥協を許さない完璧主義者なところがあります。", image: "blacksmith.jpg", points: {A:2, B:3, C:0} },
+            { id: "gardener", title: "王宮の庭師", desc: "前世のあなたは自然を愛し、調和を作る庭師でした。忍耐強く、時間がかかる変化を楽しむことができます。育てること、整えることに才能を発揮します。", image: "gardener.jpg", points: {A:1, B:2, C:2} },
+            { id: "scout", title: "敏腕の密偵（スカウト）", desc: "前世のあなたは情報を収集する専門家でした。観察力が鋭く、他人の小さな変化や嘘にすぐ気づきます。世渡り上手で、リスク管理能力が非常に高いです。", image: "scout.jpg", points: {A:1, B:3, C:1} },
+            { id: "inventor", title: "稀代の発明家", desc: "前世のあなたは世の中にないものを作り出す発明家でした。既存の枠組みに囚われない自由な発想を持ち、常に「もっと便利にできないか」を考えています。", image: "inventor.jpg", points: {A:0, B:2, C:3} }
+        ];
+
+        let currentStep = 0;
+        let score = { A: 0, B: 0, C: 0 };
+
+        function startDiagnosis() {
+            document.getElementById('splash-screen').classList.add('hidden');
+            document.getElementById('question-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentStep < questions.length) {
+                const q = questions[currentStep];
+                document.getElementById('question-text').textContent = q.q;
+                document.getElementById('optA-text').textContent = q.a;
+                document.getElementById('optB-text').textContent = q.b;
+                document.getElementById('optC-text').textContent = q.c;
+                document.getElementById('progress-bar').style.width = `${(currentStep / questions.length) * 100}%`;
+                updateBackground('past_world.jpg'); 
+            } else {
+                showLoading();
+            }
+        }
+
+        function answer(type) {
+            score[type]++;
+            currentStep++;
+            showQuestion();
+        }
+
+        function showLoading() {
+            document.getElementById('question-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = '100%';
+            setTimeout(showResult, 2000);
+        }
+
+        function showResult() {
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let bestMatch = resultsData[0];
+            let maxCorrelation = -1;
+
+            resultsData.forEach(result => {
+                const correlation = (score.A * result.points.A) + (score.B * result.points.B) + (score.C * result.points.C);
+                if (correlation > maxCorrelation) {
+                    maxCorrelation = correlation;
+                    bestMatch = result;
+                }
+            });
+
+            document.getElementById('result-title').textContent = bestMatch.title;
+            document.getElementById('result-image').src = bestMatch.image;
+            document.getElementById('result-desc').textContent = bestMatch.desc;
+            updateBackground(bestMatch.image);
+        }
+
+        function updateBackground(imageUrl) {
+            document.getElementById('app-container').style.backgroundImage = `url('${imageUrl}')`;
+        }
+
+        function restart() {
+            currentStep = 0;
+            score = { A: 0, B: 0, C: 0 };
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('splash-screen').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = '0%';
+        }
+    </script>
+</body>
+</html>
