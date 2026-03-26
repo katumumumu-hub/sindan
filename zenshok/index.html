@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-title" content="前世現実職診断">
     <link rel="apple-touch-icon" href="past_icon.jpg">
 
-    <title>【精密】あなたの前世の現実職業診断</title>
+    <title>【精密20問】あなたの前世の現実職業診断</title>
     <style>
         :root {
             --primary-color: #3e2723;
@@ -179,8 +179,8 @@
             <div id="splash-screen">
                 <h1>【魂の履歴書】<br>あなたの前世職業診断</h1>
                 <p style="margin-bottom: 25px; font-size: 0.9rem; color: #666;">
-                    現世でのあなたの「癖」や「好み」は、<br>
-                    かつて生きた時代の名残かもしれません。
+                    20個の問いに答え、あなたの魂に刻まれた<br>
+                    かつての「業（なりわい）」を呼び覚まします。
                 </p>
                 <button class="restart-btn" onclick="startDiagnosis()">診断を開始する</button>
             </div>
@@ -195,16 +195,16 @@
             </div>
 
             <div id="loading-screen" class="hidden">
-                <p class="question-text">前世の記憶を整理中...</p>
+                <p class="question-text">深層記憶にアクセス中...</p>
                 <div style="font-size: 3rem; animation: spin 2s linear infinite;">💠</div>
             </div>
 
             <div id="result-screen" class="hidden">
-                <p style="font-size: 0.8rem; color: #888;">Analysis Completed</p>
+                <p style="font-size: 0.8rem; color: #888;">Deep Analysis Completed</p>
                 <p class="result-title" id="result-title"></p>
                 <img src="" alt="診断結果" class="result-image" id="result-image">
                 <p class="result-desc" id="result-desc"></p>
-                <button class="restart-btn" onclick="restart()">最初に戻る</button>
+                <button class="restart-btn" onclick="goToTop()">トップメニューに戻る</button>
             </div>
         </div>
     </div>
@@ -220,20 +220,31 @@
             { q: "夜、ふと考え込んでしまうことは？", a: "社会の仕組みや正義について", b: "将来の蓄えや生活の安定について", c: "人生の意味や宇宙の広がりについて" },
             { q: "買い物でのあなたのスタイルは？", a: "ブランドや品質を重視して長く使う", b: "コスパを徹底的に比較して選ぶ", c: "直感で「これだ！」と思ったものを買う" },
             { q: "行列のできる店を見てどう思う？", a: "「並ぶ価値があるのか」冷静に分析する", b: "「儲かっているな」と経営を想像する", c: "「何か面白いことがありそう」とワクワクする" },
-            { q: "あなたが人生で最も避けたいのは？", a: "不名誉なこと、恥をかくこと", b: "無駄な努力、貧困に陥ること", c: "退屈な日常、自由を奪われること" }
+            { q: "あなたが人生で最も避けたいのは？", a: "不名誉なこと、恥をかくこと", b: "無駄な努力、貧困に陥ること", c: "退屈な日常、自由を奪われること" },
+            // --- ここから追加の10問 ---
+            { q: "古い蔵から宝地図が出てきました。", a: "すぐに役所に届け出る", b: "信頼できる仲間と山分けの計画を立てる", c: "ロマンを感じてしばらく眺める", d: "隠し通す" },
+            { q: "大雨で川が溢れそうです。どう動く？", a: "周囲に避難を呼びかけ、指揮を執る", b: "家財道具を高い場所へ移し、食料を確保する", c: "川の様子を観察し、記録を残す" },
+            { q: "一番落ち着く場所はどこですか？", a: "格式高い歴史ある建築物", b: "賑やかな商店街のど真ん中", c: "植物に囲まれた静かな庭園" },
+            { q: "目の前に壊れた機械があります。", a: "マニュアルを読んで手順通り直す", b: "安く直せる方法を考える", c: "とりあえずバラして構造を調べる" },
+            { q: "友人が理不尽に責められています。", a: "割って入り、論理的に反論する", b: "一旦その場を収め、裏でフォローする", c: "黙って寄り添い、話を聞く" },
+            { q: "手紙を書くときにこだわるのは？", a: "正しい敬語と綺麗な文字", b: "要件が簡潔に伝わること", c: "使う便箋やインクの質感" },
+            { q: "広い土地を自由に使えるなら？", a: "公共の公園や施設を建てる", b: "収益の上がる商業施設を作る", c: "誰も知らない秘密の隠れ家を作る" },
+            { q: "一番の才能は何だと思いますか？", a: "物事を公平にジャッジする力", b: "チャンスを見逃さない目", c: "細部まで作り込む集中力" },
+            { q: "歴史上の人物に会えるなら？", a: "偉大な政治家や統治者", b: "富を築いた豪商", c: "名を残した芸術家や学者" },
+            { q: "最後の質問です。あなたは今の自分が好き？", a: "規律ある自分が好き", b: "賢く生きる自分が好き", c: "自由な自分が好き" }
         ];
 
         const resultsData = [
-            { id: "judge", title: "公正なる裁判官", desc: "前世のあなたは法と秩序を守る番人でした。現世でも正義感が強く、曲がったことが大嫌い。論理的で冷静な判断力は、かつての職務の名残です。", image: "judge.jpg", points: {A:4, B:1, C:0} },
-            { id: "merchant", title: "腕利きの豪商", desc: "前世のあなたは巨大な富を動かす商人でした。現世でも経済観念が発達しており、物の価値を見抜く天才です。交渉術や損得勘定に長けています。", image: "merchant.jpg", points: {A:1, B:4, C:0} },
-            { id: "painter", title: "宮廷お抱えの絵師", desc: "前世のあなたは美を追求する芸術家でした。現世でも色彩やデザインへのこだわりが強く、感性が非常に豊か。言葉にできない感情を表現する力を持っています。", image: "painter.jpg", points: {A:0, B:1, C:4} },
-            { id: "captain", title: "不屈の船長", desc: "前世のあなたは荒波を越える航海士でした。未知の世界への好奇心と、困難に立ち向かう勇気を持っています。決断力があり、チームを引っ張る力が備わっています。", image: "captain.jpg", points: {A:3, B:1, C:1} },
-            { id: "librarian", title: "知識の守護者（司書）", desc: "前世のあなたは膨大な書物を管理する学者でした。静かな環境で知識を深めることを好み、一度気になったことは徹底的に調べる凝り性な一面があります。", image: "librarian.jpg", points: {A:1, B:1, C:3} },
-            { id: "medic", title: "野戦病院の医師", desc: "前世のあなたは人命を救う医療従事者でした。切羽詰まった状況でも冷静に対応でき、人助けに喜びを感じます。他人の痛みに敏感な優しい心の持ち主です。", image: "medic.jpg", points: {A:2, B:2, C:1} },
-            { id: "blacksmith", title: "魂を打つ刀鍛冶", desc: "前世のあなたは、一筋の鉄を叩き上げる職人でした。一つのことを極める集中力があり、手先が器用。妥協を許さない完璧主義者なところがあります。", image: "blacksmith.jpg", points: {A:2, B:3, C:0} },
-            { id: "gardener", title: "王宮の庭師", desc: "前世のあなたは自然を愛し、調和を作る庭師でした。忍耐強く、時間がかかる変化を楽しむことができます。育てること、整えることに才能を発揮します。", image: "gardener.jpg", points: {A:1, B:2, C:2} },
-            { id: "scout", title: "敏腕の密偵（スカウト）", desc: "前世のあなたは情報を収集する専門家でした。観察力が鋭く、他人の小さな変化や嘘にすぐ気づきます。世渡り上手で、リスク管理能力が非常に高いです。", image: "scout.jpg", points: {A:1, B:3, C:1} },
-            { id: "inventor", title: "稀代の発明家", desc: "前世のあなたは世の中にないものを作り出す発明家でした。既存の枠組みに囚われない自由な発想を持ち、常に「もっと便利にできないか」を考えています。", image: "inventor.jpg", points: {A:0, B:2, C:3} }
+            { id: "judge", title: "公正なる裁判官", desc: "前世のあなたは法と秩序を守る番人でした。現世でも正義感が強く、論理的で冷静な判断力はかつての職務の名残です。", image: "judge.jpg", points: {A:8, B:2, C:0} },
+            { id: "merchant", title: "腕利きの豪商", desc: "前世のあなたは巨大な富を動かす商人でした。現世でも経済観念が発達しており、交渉術や損得勘定に長けています。", image: "merchant.jpg", points: {A:2, B:8, C:0} },
+            { id: "painter", title: "宮廷お抱えの絵師", desc: "前世のあなたは美を追求する芸術家でした。現世でも色彩やデザインへのこだわりが強く、豊かな感性を持っています。", image: "painter.jpg", points: {A:0, B:2, C:8} },
+            { id: "captain", title: "不屈の船長", desc: "前世のあなたは荒波を越える航海士でした。未知への好奇心と、困難に立ち向かう決断力が備わっています。", image: "captain.jpg", points: {A:6, B:3, C:1} },
+            { id: "librarian", title: "知識の守護者（司書）", desc: "前世のあなたは書物を管理する学者でした。静かな環境で知識を深めることを好み、一度気になったことは徹底的に調べます。", image: "librarian.jpg", points: {A:3, B:1, C:6} },
+            { id: "medic", title: "野戦病院の医師", desc: "前世のあなたは人命を救う医療従事者でした。冷静な対応と、他人の痛みに敏感な優しい心の持ち主です。", image: "medic.jpg", points: {A:5, B:5, C:0} },
+            { id: "blacksmith", title: "魂を打つ刀鍛冶", desc: "前世のあなたは一筋の鉄を叩き上げる職人でした。一つのことを極める集中力があり、妥協を許さない完璧主義者です。", image: "blacksmith.jpg", points: {A:4, B:4, C:2} },
+            { id: "gardener", title: "王宮の庭師", desc: "前世のあなたは自然を愛し、調和を作る庭師でした。忍耐強く、育てることや整えることに才能を発揮します。", image: "gardener.jpg", points: {A:2, B:3, C:5} },
+            { id: "scout", title: "敏腕の密偵（スカウト）", desc: "前世のあなたは情報を収集する専門家でした。観察力が鋭く、世渡り上手でリスク管理能力が高いです。", image: "scout.jpg", points: {A:2, B:6, C:2} },
+            { id: "inventor", title: "稀代の発明家", desc: "前世のあなたは世にないものを作る発明家でした。自由な発想を持ち、常に改善や工夫を考えています。", image: "inventor.jpg", points: {A:1, B:3, C:6} }
         ];
 
         let currentStep = 0;
@@ -297,12 +308,9 @@
             document.getElementById('app-container').style.backgroundImage = `url('${imageUrl}')`;
         }
 
-        function restart() {
-            currentStep = 0;
-            score = { A: 0, B: 0, C: 0 };
-            document.getElementById('result-screen').classList.add('hidden');
-            document.getElementById('splash-screen').classList.remove('hidden');
-            document.getElementById('progress-bar').style.width = '0%';
+        // トップメニューに戻る
+        function goToTop() {
+            window.location.href = '../index.html';
         }
     </script>
 </body>
