@@ -170,7 +170,21 @@
             font-size: 1rem;
             font-weight: bold;
             width: 100%;
+            margin-bottom: 10px;
             box-shadow: 0 4px 10px rgba(72, 52, 212, 0.2);
+            cursor: pointer;
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
         }
 
         .hidden { display: none !important; }
@@ -198,8 +212,7 @@
             <div id="question-screen" class="hidden">
                 <p style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold; margin-bottom: 5px;" id="q-number"></p>
                 <p class="question-text" id="question-text"></p>
-                <div class="options-container" id="options-area">
-                    </div>
+                <div class="options-container" id="options-area"></div>
             </div>
 
             <div id="loading-screen" class="hidden">
@@ -222,7 +235,9 @@
                     <div class="legend-item"><span class="dot bar-pleasure"></span> 楽: <span id="label-pleasure"></span>%</div>
                 </div>
                 <div class="result-desc" id="result-desc"></div>
+                
                 <button class="action-btn" onclick="restart()">もう一度診断する</button>
+                <button class="secondary-btn" onclick="goToTop()">トップメニューに戻る</button>
             </div>
         </div>
     </div>
@@ -246,7 +261,7 @@
             { q: "誰かにサプライズをされたら？", a: ["感激して飛び上がる", "驚きすぎて少しパニック", "申し訳なさで恐縮する", "仕掛けの面白さに感銘を受ける"], t: ["joy", "anger", "sorrow", "pleasure"] },
             { q: "騒がしい子供たちが近くにいたら？", a: ["元気があって微笑ましい", "うるさくて集中できない", "親の苦労を思って沈む", "遊びの独創性に注目する"], t: ["joy", "anger", "sorrow", "pleasure"] },
             { q: "プレゼントを贈るならどんなもの？", a: ["相手が絶対に喜ぶもの", "実用的で質の高いもの", "心に残る思い出の品", "他にはない珍しいもの"], t: ["joy", "anger", "sorrow", "pleasure"] },
-            { q: "「運命」という言葉をどう捉える？", a: ["幸せへ導いてくれるもの", "自分の力でねじ伏せるもの", "逆らえない悲しい力", "偶然が重なる面白いゲーム"], t: ["joy", "anger", "sorrow", "pleasure"] },
+            { q: "「運命」という言葉をどう捉える？", a: ["幸せへ導いてくれるもの", "自分の力でねじ伏めるもの", "逆らえない悲しい力", "偶然が重なる面白いゲーム"], t: ["joy", "anger", "sorrow", "pleasure"] },
             { q: "一日の終わりに自分にかける言葉は？", a: ["今日も最高だったね", "もっとやれたはずだ", "疲れた、もう休もう…", "明日は何が起きるかな？"], t: ["joy", "anger", "sorrow", "pleasure"] },
             { q: "あなたの人生を一言で表すと？", a: ["感謝", "挑戦", "流転", "冒険"], t: ["joy", "anger", "sorrow", "pleasure"] }
         ];
@@ -331,6 +346,10 @@
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('splash-screen').classList.remove('hidden');
             document.getElementById('progress-bar').style.width = '0%';
+        }
+
+        function goToTop() {
+            window.location.href = '../index.html';
         }
     </script>
 </body>
