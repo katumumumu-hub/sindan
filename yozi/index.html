@@ -79,7 +79,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             margin-bottom: 30px;
-            min-height: 4rem;
+            min-height: 4.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -124,15 +124,26 @@
             transition: width 0.3s;
         }
 
+        /* 結果画面の四字熟語デザイン */
+        .result-title-container {
+            margin: 20px 0;
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
         .result-title {
             font-size: 2.4rem;
             color: var(--primary-color);
-            margin: 20px 0;
             font-weight: bold;
-            letter-spacing: 0.5rem;
-            border-bottom: 2px solid var(--accent-color);
-            display: inline-block;
-            padding-bottom: 5px;
+            letter-spacing: 0.3rem;
+        }
+
+        ruby rt {
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+            color: var(--accent-color);
+            font-weight: normal;
         }
 
         .result-desc {
@@ -207,7 +218,9 @@
 
             <div id="result-screen" class="hidden">
                 <p style="font-size: 0.8rem; color: #888;">あなたの本質を表す言葉</p>
-                <p class="result-title" id="result-title"></p>
+                <div class="result-title-container">
+                    <div class="result-title" id="result-title-area"></div>
+                </div>
                 <div class="result-desc" id="result-desc"></div>
                 
                 <button class="action-btn" onclick="restart()">もう一度診断する</button>
@@ -217,7 +230,6 @@
     </div>
 
     <script>
-        // 質問データ（20問）
         const questions = [
             { q: "壁にぶつかった時、最初にとる行動は？", a: "正面から力技で突破する", b: "回避ルートや効率的な方法を探る", c: "誰かの助けを待つか、一旦休む" },
             { q: "友人との約束、あなたの立ち位置は？", a: "計画を立てて皆を引っ張る", b: "調整役として全体の意見をまとめる", c: "流れに任せて楽しむ" },
@@ -241,28 +253,28 @@
             { q: "最後に選ぶならどっち？", a: "栄光ある戦い", b: "静かな平和", c: "自由な旅" }
         ];
 
-        // 結果データ（20種類）
+        // 結果データに「読み（kana）」を追加
         const resultsData = [
-            { id: 1, title: "不撓不屈", desc: "強い意志で困難に立ち向かう人。あなたの粘り強さは周囲の希望となります。", points: {A:4, B:1, C:0} },
-            { id: 2, title: "冷静沈着", desc: "何事にも動じず、客観的に判断できる人。組織の参謀として不可欠な存在です。", points: {A:1, B:4, C:1} },
-            { id: 3, title: "悠々自適", desc: "世俗に縛られず、自分の思うままに生きる人。心の豊かさを大切にする達人です。", points: {A:0, B:2, C:4} },
-            { id: 4, title: "猪突猛進", desc: "目標に向かって一直線に突き進む情熱家。その勢いが道を切り拓きます。", points: {A:5, B:0, C:0} },
-            { id: 5, title: "博学多才", desc: "広い知識と多彩な能力を持つ人。知的な魅力で人々を惹きつけます。", points: {A:1, B:4, C:0} },
-            { id: 6, title: "天真爛漫", desc: "純粋で飾らない心を持つ人。あなたの明るさは周囲を幸せにします。", points: {A:2, B:0, C:4} },
-            { id: 7, title: "温厚篤実", desc: "穏やかで誠実な人。信頼感があり、多くの人に慕われる徳の持ち主です。", points: {A:0, B:3, C:3} },
-            { id: 8, title: "大胆不敵", desc: "恐れを知らず、度胸のある人。リスクを恐れず挑戦する姿は圧巻です。", points: {A:4, B:2, C:0} },
-            { id: 9, title: "切磋琢磨", desc: "仲間と共に成長し続ける人。向上心が強く、常に自分を磨いています。", points: {A:4, B:2, C:1} },
-            { id: 10, title: "一期一会", desc: "瞬間の縁を大切にする人。一期一会の精神で、深い人間関係を築きます。", points: {A:1, B:1, C:4} },
-            { id: 11, title: "明鏡止水", desc: "邪念のない澄み切った心の持ち主。本質を見抜く力に長けています。", points: {A:0, B:4, C:2} },
-            { id: 12, title: "行雲流水", desc: "物事に執着せず、自然の流れに身を任せる人。柔軟な生き方が魅力です。", points: {A:0, B:1, C:5} },
-            { id: 13, title: "勇猛果敢", desc: "勇気があり、決断力に富む人。リーダーシップを発揮し勝利を掴みます。", points: {A:5, B:1, C:0} },
-            { id: 14, title: "一意専心", desc: "一つのことに心を集中させる人。専門性を極めるプロフェッショナル。", points: {A:3, B:3, C:0} },
-            { id: 15, title: "自由奔放", desc: "枠に囚われず、思うがままに行動する人。独自のスタイルを貫きます。", points: {A:3, B:0, C:4} },
-            { id: 16, title: "謹厳実直", desc: "真面目で規則正しく、誠実な人。確実な仕事ぶりで社会を支えます。", points: {A:1, B:4, C:1} },
-            { id: 17, title: "独立独歩", desc: "他人に頼らず、自分の信じる道を行く人。強固なアイデンティティを持ちます。", points: {A:4, B:2, C:1} },
-            { id: 18, title: "才色兼備", desc: "才能と外見、あるいは内面を兼ね備えた人。憧れの的となる華やかな存在。", points: {A:2, B:3, C:1} },
-            { id: 19, title: "粉骨砕身", desc: "力の限りを尽くして努力する人。献身的な姿勢が大きな成果を生みます。", points: {A:5, B:1, C:0} },
-            { id: 20, title: "虚心坦懐", desc: "先入観を持たず、素直な心で接する人。柔軟な思考で物事を解決します。", points: {A:1, B:3, C:3} }
+            { id: 1, title: "不撓不屈", kana: "ふとうふくつ", desc: "強い意志で困難に立ち向かう人。あなたの粘り強さは周囲の希望となります。", points: {A:4, B:1, C:0} },
+            { id: 2, title: "冷静沈着", kana: "れいせいちんちゃく", desc: "何事にも動じず、客観的に判断できる人。組織の参謀として不可欠な存在です。", points: {A:1, B:4, C:1} },
+            { id: 3, title: "悠々自適", kana: "ゆうゆうじてき", desc: "世俗に縛られず、自分の思うままに生きる人。心の豊かさを大切にする達人です。", points: {A:0, B:2, C:4} },
+            { id: 4, title: "猪突猛進", kana: "ちょとつもうしん", desc: "目標に向かって一直線に突き進む情熱家。その勢いが道を切り拓きます。", points: {A:5, B:0, C:0} },
+            { id: 5, title: "博学多才", kana: "はくがくたさい", desc: "広い知識と多彩な能力を持つ人。知的な魅力で人々を惹きつけます。", points: {A:1, B:4, C:0} },
+            { id: 6, title: "天真爛漫", kana: "てんしんらんまん", desc: "純粋で飾らない心を持つ人。あなたの明るさは周囲を幸せにします。", points: {A:2, B:0, C:4} },
+            { id: 7, title: "温厚篤実", kana: "おんこうとくじつ", desc: "穏やかで誠実な人。信頼感があり、多くの人に慕われる徳の持ち主です。", points: {A:0, B:3, C:3} },
+            { id: 8, title: "大胆不敵", kana: "だいたんふてき", desc: "恐れを知らず、度胸のある人。リスクを恐れず挑戦する姿は圧巻です。", points: {A:4, B:2, C:0} },
+            { id: 9, title: "切磋琢磨", kana: "せっさたくま", desc: "仲間と共に成長し続ける人。向上心が強く、常に自分を磨いています。", points: {A:4, B:2, C:1} },
+            { id: 10, title: "一期一会", kana: "いちごいちえ", desc: "瞬間の縁を大切にする人。一期一会の精神で、深い人間関係を築きます。", points: {A:1, B:1, C:4} },
+            { id: 11, title: "明鏡止水", kana: "めいきょうしすい", desc: "邪念のない澄み切った心の持ち主。本質を見抜く力に長けています。", points: {A:0, B:4, C:2} },
+            { id: 12, title: "行雲流水", kana: "こううんりゅうすい", desc: "物事に執着せず、自然の流れに身を任せる人。柔軟な生き方が魅力です。", points: {A:0, B:1, C:5} },
+            { id: 13, title: "勇猛果敢", kana: "ゆうもうかかん", desc: "勇気があり、決断力に富む人。リーダーシップを発揮し勝利を掴みます。", points: {A:5, B:1, C:0} },
+            { id: 14, title: "一意専心", kana: "いちいせんしん", desc: "一つのことに心を集中させる人。専門性を極めるプロフェッショナル。", points: {A:3, B:3, C:0} },
+            { id: 15, title: "自由奔放", kana: "じゆうほんぽう", desc: "枠に囚われず、思うがままに行動する人。独自のスタイルを貫きます。", points: {A:3, B:0, C:4} },
+            { id: 16, title: "謹厳実直", kana: "きんげんじっちょく", desc: "真面目で規則正しく、誠実な人。確実な仕事ぶりで社会を支えます。", points: {A:1, B:4, C:1} },
+            { id: 17, title: "独立独歩", kana: "どくりつどっぽ", desc: "他人に頼らず、自分の信じる道を行く人。強固なアイデンティティを持ちます。", points: {A:4, B:2, C:1} },
+            { id: 18, title: "才色兼備", kana: "さいしょくけんび", desc: "才能と外見、あるいは内面を兼ね備えた人。憧れの的となる華やかな存在。", points: {A:2, B:3, C:1} },
+            { id: 19, title: "粉骨砕身", kana: "ふんこつさいしん", desc: "力の限りを尽くして努力する人。献身的な姿勢が大きな成果を生みます。", points: {A:5, B:1, C:0} },
+            { id: 20, title: "虚心坦懐", kana: "きょしんたんかい", desc: "先入観を持たず、素直な心で接する人。柔軟な思考で物事を解決します。", points: {A:1, B:3, C:3} }
         ];
 
         let currentStep = 0;
@@ -316,7 +328,10 @@
                 }
             });
 
-            document.getElementById('result-title').textContent = bestMatch.title;
+            // rubyタグを使ってふりがなを表示
+            const titleArea = document.getElementById('result-title-area');
+            titleArea.innerHTML = `<ruby>${bestMatch.title}<rt>${bestMatch.kana}</rt></ruby>`;
+            
             document.getElementById('result-desc').textContent = bestMatch.desc;
         }
 
@@ -328,7 +343,6 @@
             document.getElementById('progress-bar').style.width = '0%';
         }
 
-        // トップメニューに戻る
         function goToTop() {
             window.location.href = '../index.html';
         }
