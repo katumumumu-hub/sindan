@@ -100,6 +100,7 @@
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
         }
 
         .option-btn:active {
@@ -153,6 +154,18 @@
             font-size: 1rem;
             cursor: pointer;
             width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 12px 40px;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
         }
 
         .hidden { display: none !important; }
@@ -196,12 +209,15 @@
                 <p style="font-size: 0.8rem; color: #888;">あなたの本質を表す言葉</p>
                 <p class="result-title" id="result-title"></p>
                 <div class="result-desc" id="result-desc"></div>
-                <button class="action-btn" onclick="restart()">再び診断する</button>
+                
+                <button class="action-btn" onclick="restart()">もう一度診断する</button>
+                <button class="secondary-btn" onclick="goToTop()">トップメニューに戻る</button>
             </div>
         </div>
     </div>
 
     <script>
+        // 質問データ（20問）
         const questions = [
             { q: "壁にぶつかった時、最初にとる行動は？", a: "正面から力技で突破する", b: "回避ルートや効率的な方法を探る", c: "誰かの助けを待つか、一旦休む" },
             { q: "友人との約束、あなたの立ち位置は？", a: "計画を立てて皆を引っ張る", b: "調整役として全体の意見をまとめる", c: "流れに任せて楽しむ" },
@@ -225,6 +241,7 @@
             { q: "最後に選ぶならどっち？", a: "栄光ある戦い", b: "静かな平和", c: "自由な旅" }
         ];
 
+        // 結果データ（20種類）
         const resultsData = [
             { id: 1, title: "不撓不屈", desc: "強い意志で困難に立ち向かう人。あなたの粘り強さは周囲の希望となります。", points: {A:4, B:1, C:0} },
             { id: 2, title: "冷静沈着", desc: "何事にも動じず、客観的に判断できる人。組織の参謀として不可欠な存在です。", points: {A:1, B:4, C:1} },
@@ -309,6 +326,11 @@
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('splash-screen').classList.remove('hidden');
             document.getElementById('progress-bar').style.width = '0%';
+        }
+
+        // トップメニューに戻る
+        function goToTop() {
+            window.location.href = '../index.html';
         }
     </script>
 </body>
