@@ -35,7 +35,6 @@
             width: 100%;
         }
 
-        /* iPhoneのアドレスバーに対応した高さ設定 */
         #app-container {
             width: 100vw;
             height: 100dvh; 
@@ -160,6 +159,7 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+            margin-top: 10px;
         }
 
         .hidden { display: none !important; }
@@ -199,7 +199,7 @@
                 <p class="result-title" id="result-title"></p>
                 <img src="" alt="診断結果" class="result-image" id="result-image">
                 <p class="result-desc" id="result-desc"></p>
-                <button class="restart-btn" onclick="restart()">もう一度診断する</button>
+                <button class="restart-btn" onclick="goToTop()">トップメニューに戻る</button>
             </div>
         </div>
     </div>
@@ -228,10 +228,9 @@
             { q: "診断終了。今の気分は？", a: "「早く結果が見たい！」", b: "「本当に当たるのかな？」", c: "「終わるのが名残惜しい」" }
         ];
 
-        // 画像URLをアップロードしたjpgファイル名に変更
         const resultsData = {
             burning: { title: "【全開！バーニング・ラブ型】", desc: "恋愛＝人生のガソリン。直感と情熱で突き進むタイプ。一目惚れしやすく、駆け引きよりもストレートな勝負を好みます。", image: "burning.jpg", overlay: "rgba(255, 245, 240, 0.85)" },
-            guardian: { title: "【安心のガーディアン型】", desc: "恋愛＝心の安全基地。信頼を重んじるタイプ。じっくり相手を知ってから好きになります。一度付き合うと非常に長く続きます。", image: "guardian.jpg", overlay: "rgba(255, 252, 245, 0.85)" },
+            guardian: { title: "【安心のガーディアン型】", desc: "恋愛＝心の安全基地. 信頼を重んじるタイプ。じっくり相手を知ってから好きになります。一度付き合うと非常に長く続きます。", image: "guardian.jpg", overlay: "rgba(255, 252, 245, 0.85)" },
             nomad: { title: "【孤高のノマド・スタイル型】", desc: "恋愛＝人生のスパイス。自分の世界を一番大切にするタイプ。束縛を嫌い、ミステリアスな魅力で相手を翻弄します。", image: "nomad.jpg", overlay: "rgba(240, 245, 255, 0.85)" },
             profiler: { title: "【知的なプロファイラー型】", desc: "恋愛＝高度な心理戦。相手を観察し、最適解を探すタイプ。感情に流されず、スマートな大人の恋愛を楽しみます。", image: "profiler.jpg", overlay: "rgba(245, 255, 252, 0.85)" },
             trickster: { title: "【変幻自在のトリックスター型】", desc: "恋愛＝予測不能な冒険。相手によって自分のキャラが変わるタイプ。掴みどころがなく、常に新しい刺激を求める冒険家です。", image: "trickster.jpg", overlay: "rgba(255, 240, 255, 0.85)" }
@@ -258,7 +257,7 @@
                 document.getElementById('optB-text').textContent = q.b;
                 document.getElementById('optC-text').textContent = q.c;
                 document.getElementById('progress-bar').style.width = `${(currentStep / questions.length) * 100}%`;
-                updateBackground(resultsData.guardian.image);
+                updateBackground('guardian.jpg'); // 初期背景
             } else {
                 showLoading();
             }
@@ -299,13 +298,10 @@
             document.getElementById('app-container').style.setProperty('--bg-overlay', data.overlay);
         }
 
-        function restart() {
-            currentStep = 0;
-            answers = { A: 0, B: 0, C: 0 };
-            document.getElementById('result-screen').classList.add('hidden');
-            document.getElementById('splash-screen').classList.remove('hidden');
-            document.getElementById('progress-bar').style.width = '0%';
-            updateBackground(resultsData.guardian.image);
+        // トップメニューに戻る関数
+        function goToTop() {
+            // 親フォルダのindex.htmlへ遷移
+            window.location.href = '../index.html';
         }
     </script>
 </body>
