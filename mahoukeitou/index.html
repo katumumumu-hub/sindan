@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="魔法系統診断">
+    <link rel="apple-touch-icon" href="magic_icon.jpg">
+
+    <title>【魔導適性】もしも魔法が使えたら、どの系統？診断</title>
+    <style>
+        :root {
+            --primary-color: #1a237e; /* 深い魔導書のような紺色 */
+            --secondary-color: #7986cb;
+            --accent-color: #9c27b0; /* 魔力の紫 */
+            --text-color: #2c3e50;
+            --bg-overlay: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hiragino Mincho ProN', 'MS Mincho', serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e8eaf6;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        #app-container {
+            width: 100vw;
+            height: 100dvh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+            position: relative;
+            background-image: url('library_bg.jpg'); /* 初期背景 */
+        }
+
+        #app-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-overlay);
+            z-index: 1;
+        }
+
+        #content {
+            position: relative;
+            z-index: 2;
+            width: 92%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            border: 2px solid var(--secondary-color);
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            min-height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background-color: #fff;
+            border: 1px solid #d1d9ff;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+        }
+
+        .option-btn:active {
+            background-color: #e8eaf6;
+            border-color: var(--accent-color);
+            transform: scale(0.97);
+        }
+
+        #progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background-color: #ddd;
+            z-index: 3;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #7986cb, #9c27b0);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .result-title {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .result-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 3px solid var(--accent-color);
+            /* ピクセルアートを見やすくするための設定 */
+            image-rendering: pixelated; 
+        }
+
+        .result-desc {
+            font-size: 0.9rem;
+            text-align: left;
+            margin-bottom: 20px;
+            background: #f3f0f8;
+            padding: 15px;
+            border-left: 5px solid var(--accent-color);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .hidden { display: none !important; }
+        @keyframes magic-spin { 
+            0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg); } 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <div id="content">
+            <div id="splash-screen">
+                <h1>【魔導適性試験】<br>もしも魔法が使えたら？</h1>
+                <p style="margin-bottom: 25px; font-size: 0.9rem; color: #555;">
+                    あなたの深層心理に眠る「魔力の波長」を測定し、<br>
+                    最も適した魔法の系統を導き出します。
+                </p>
+                <button class="restart-btn" onclick="startDiagnosis()">適性を測定する</button>
+            </div>
+
+            <div id="question-screen" class="hidden">
+                <p class="question-text" id="question-text"></p>
+                <div class="options-container">
+                    <button class="option-btn" onclick="answer('A')">A. <span id="optA-text"></span></button>
+                    <button class="option-btn" onclick="answer('B')">B. <span id="optB-text"></span></button>
+                    <button class="option-btn" onclick="answer('C')">C. <span id="optC-text"></span></button>
+                </div>
+            </div>
+
+            <div id="loading-screen" class="hidden">
+                <p class="question-text">魔力を練り込んでいます...</p>
+                <div style="font-size: 3.5rem; animation: magic-spin 2.5s linear infinite; display: inline-block;">✨</div>
+            </div>
+
+            <div id="result-screen" class="hidden">
+                <p style="font-size: 0.8rem; color: #888;">Mana Wave Analysis Completed</p>
+                <p class="result-title" id="result-title"></p>
+                <img src="" alt="魔法系統" class="result-image" id="result-image">
+                <p class="result-desc" id="result-desc"></p>
+                <button class="restart-btn" onclick="goToTop()">トップに戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "魔法学校の入学式。あなたが一番に手を取りたい杖は？", a: "宝石が埋め込まれた華やかな杖", b: "古木から削り出された無骨な杖", c: "銀色に輝く幾何学的な杖" },
+            { q: "魔法を使って、まずやってみたいことは？", a: "空を自由に飛び回る", b: "荒れた土地を緑豊かな花園に変える", c: "失くした物を一瞬で手元に呼び寄せる" },
+            { q: "困難に直面したとき、あなたならどう解決する？", a: "情熱と勢いで突破する", b: "周囲の助けを借りて調和を保つ", c: "冷静に法則を見つけ出し、無効化する" },
+            { q: "あなたが「美しい」と感じる風景は？", a: "燃えるような夕焼けと地平線", b: "深い霧に包まれた静かな森", c: "星が降るような夜空と満月" },
+            { q: "魔導書に何か一筆書くとしたら、何を使う？", a: "鮮やかな色のインク", b: "指先に込めた魔力の光", c: "羽ペンで記す緻密な数式" },
+            { q: "魔法の薬（ポーション）を作るなら、重視するのは？", a: "即効性がある強力な効き目", b: "心と体をじっくり癒す成分", c: "何が起こるか分からない未知の素材" },
+            { q: "守護獣（パートナー）にするなら誰？", a: "誇り高き紅蓮のフェニックス", b: "言葉を解する利口な黒猫", c: "形を持たない変幻自在の精霊" },
+            { q: "魔法の力が一番高まる時間帯は？", a: "太陽が真上に昇る正午", b: "草木が眠る静かな深夜", c: "昼と夜が混ざり合う黄昏時" },
+            { q: "誰かに魔法を教えることになりました。教え方は？", a: "「感じろ！」と直感を大切にさせる", b: "基礎を大切に、ゆっくりと寄り添う", c: "理論から完璧にマスターさせる" },
+            { q: "もし魔法が消えてしまうとしたら、最後に何を願う？", a: "みんなの記憶に残る大きな花火を上げる", b: "大切な人たちの幸せを祈る", c: "魔法が存在した証を記録に残す" }
+            // ここにさらに10問追加して20問にすることも可能です
+        ];
+
+        const resultsData = [
+            { id: "fire", title: "激情の火炎魔導士", desc: "あなたは情熱的で、物事を動かすエネルギーに満ちています。破壊と再生を司る火炎魔法を、直感的に使いこなす素質があります。", image: "fire_magic.png", points: {A:10, B:2, C:1} },
+            { id: "life", title: "慈愛の生命術師", desc: "あなたは周囲との調和を重んじ、癒やしを与える存在です。草木を操り、傷ついた者を助ける緑の魔法に適性があります。", image: "life_magic.png", points: {A:2, B:10, C:3} },
+            { id: "space", title: "理知の時空魔導士", desc: "あなたは冷静沈着で、世界の理（ことわり）を見抜く力があります。空間を繋ぎ、時を操る高難度な数式魔法の使い手です。", image: "space_magic.png", points: {A:1, B:3, C:10} },
+            { id: "illusion", title: "変幻の幻惑使い", desc: "あなたは独創的な感性を持ち、常識に囚われません。実体のない光や音を操り、人を驚かせるトリッキーな魔法が得意です。", image: "illusion_magic.png", points: {A:6, B:2, C:6} },
+            { id: "star", title: "古の星霊詠唱者", desc: "あなたはどこか浮世離れした神秘的な魅力があります。宇宙の星々の力を借りて、壮大な奇跡を起こす力を持っています。", image: "star_magic.png", points: {A:3, B:6, C:6} }
+        ];
+
+        let currentStep = 0;
+        let score = { A: 0, B: 0, C: 0 };
+
+        function startDiagnosis() {
+            document.getElementById('splash-screen').classList.add('hidden');
+            document.getElementById('question-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentStep < questions.length) {
+                const q = questions[currentStep];
+                document.getElementById('question-text').textContent = q.q;
+                document.getElementById('optA-text').textContent = q.a;
+                document.getElementById('optB-text').textContent = q.b;
+                document.getElementById('optC-text').textContent = q.c;
+                document.getElementById('progress-bar').style.width = `${(currentStep / questions.length) * 100}%`;
+            } else {
+                showLoading();
+            }
+        }
+
+        function answer(type) {
+            score[type]++;
+            currentStep++;
+            showQuestion();
+        }
+
+        function showLoading() {
+            document.getElementById('question-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = '100%';
+            setTimeout(showResult, 2000);
+        }
+
+        function showResult() {
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let bestMatch = resultsData[0];
+            let maxCorrelation = -1;
+
+            resultsData.forEach(result => {
+                const correlation = (score.A * result.points.A) + (score.B * result.points.B) + (score.C * result.points.C);
+                if (correlation > maxCorrelation) {
+                    maxCorrelation = correlation;
+                    bestMatch = result;
+                }
+            });
+
+            document.getElementById('result-title').textContent = bestMatch.title;
+            document.getElementById('result-image').src = bestMatch.image;
+            document.getElementById('result-desc').textContent = bestMatch.desc;
+            
+            // 背景を結果に合わせて変更（画像がない場合は色だけでも可）
+            document.getElementById('app-container').style.backgroundImage = `url('${bestMatch.image}')`;
+        }
+
+        function goToTop() {
+            // 元の構造に従い、一つ上の階層のindex.htmlへ
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>
