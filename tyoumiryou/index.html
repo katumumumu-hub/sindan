@@ -11,23 +11,27 @@
             --primary-bg: #fdfaf5;
             --card-bg: #ffffff;
             --accent-main: #e67e22; /* スパイスオレンジ */
-            --accent-sub: #27ae60;  /* ハーブグリーン */
+            --accent-sub: #27ae60; /* ハーブグリーン */
             --text-main: #4a4a4a;
             --text-muted: #888;
+            --line-color: #06C755;
+            --x-color: #000000;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif; }
         body { background-color: var(--primary-bg); color: var(--text-main); overflow: hidden; }
 
         #app-container {
-            width: 100vw; height: 100dvh;
+            width: 100vw;
+            height: 100dvh;
             display: flex; justify-content: center; align-items: center;
             background: linear-gradient(135deg, #fdfaf5 0%, #f3e5ab 100%);
             position: relative;
         }
 
         #content {
-            position: relative; z-index: 10; width: 92%; max-width: 500px;
+            position: relative;
+            z-index: 10; width: 92%; max-width: 500px;
             background: var(--card-bg); padding: 25px; border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             text-align: center;
@@ -38,14 +42,16 @@
         
         .options-container { display: flex; flex-direction: column; gap: 12px; }
         .option-btn {
-            background: #fff; border: 2px solid #eee; padding: 16px;
+            background: #fff;
+            border: 2px solid #eee; padding: 16px;
             color: var(--text-main); border-radius: 12px; text-align: left; transition: 0.2s;
             font-size: 0.95rem; cursor: pointer;
         }
         .option-btn:active { background: var(--accent-main); color: white; border-color: var(--accent-main); }
 
         #progress-bar {
-            position: absolute; top: 0; left: 0; height: 6px;
+            position: absolute;
+            top: 0; left: 0; height: 6px;
             background: var(--accent-main);
             width: 0%; transition: width 0.3s;
         }
@@ -55,11 +61,36 @@
         .result-desc { font-size: 0.9rem; text-align: left; padding: 15px; background: #fff9f0; border-radius: 10px; margin-bottom: 20px; line-height: 1.6; }
 
         .btn-action {
-            background: var(--accent-main); color: white;
+            background: var(--accent-main);
+            color: white;
             padding: 16px 40px; border: none; border-radius: 30px;
             font-weight: bold; cursor: pointer; font-size: 1rem;
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+            width: 100%;
+            margin-bottom: 10px;
         }
+
+        .share-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .btn-share {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .btn-x { background-color: var(--x-color); }
+        .btn-line { background-color: var(--line-color); }
 
         .hidden { display: none !important; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -76,6 +107,7 @@
                 <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:25px;">20の質問で、あなたの隠れた性格と<br>人間関係での「味付け」を分析します。</p>
                 <button class="btn-action" onclick="start()">診断をはじめる</button>
             </div>
+
             <div id="question-screen" class="hidden">
                 <p id="q-num" style="font-size:0.8rem; color:var(--accent-sub); margin-bottom:5px; font-weight: bold;"></p>
                 <p class="question-text" id="q-text"></p>
@@ -85,16 +117,24 @@
                     <button class="option-btn" onclick="next('C')">C. <span id="optC"></span></button>
                 </div>
             </div>
+
             <div id="loading" class="hidden">
                 <div class="loading-icon">🍳</div>
                 <p style="margin-top: 15px;">あなたの成分を調合中...</p>
             </div>
+          
             <div id="result-screen" class="hidden">
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">あなたのタイプは…</p>
                 <p class="result-title" id="res-title"></p>
                 <img src="" id="res-img" class="result-image">
                 <div class="result-desc" id="res-desc"></div>
-                <button class="btn-action" onclick="location.reload()">もう一度診断する</button>
+
+                <div class="share-container">
+                    <button class="btn-share btn-x" id="btn-x">Xでシェア</button>
+                    <button class="btn-share btn-line" id="btn-line">LINEで送る</button>
+                </div>
+
+                <button class="btn-action" style="background: #888;" onclick="location.reload()">もう一度診断する</button>
             </div>
         </div>
     </div>
@@ -108,7 +148,7 @@
             { q: "あなたの机の上はどんな状態？", a: "整理整頓され、何がどこにあるか明確", b: "適度に散らかっているが使いやすい", c: "自分にしかわからない独特な配置" },
             { q: "新しいお店に入るときは？", a: "人気ランキング1位を注文する", b: "直感で美味しそうなものを選ぶ", c: "あまり人が頼まない珍しいものに挑戦" },
             { q: "サプライズを仕掛けるのは好き？", a: "大好き！相手の驚く顔が見たい", b: "されるのはいいけど、やるのは苦手", c: "平穏が一番。サプライズは不要" },
-            { q: "トラブルが起きた時の反応は？", a: "真っ先に状況を整理して指示を出す", b: "周囲を落ち着かせようとなだめる", c: "一人で黙々と解決策を実行する" },
+            { q: "トラブルが起きた時の反応は？", a: "真っ先に状況を整理して指示を出す", b: "周囲を落ち着かせようとななめる", c: "一人で黙々と解決策を実行する" },
             { q: "自分の性格を一言で言うなら？", a: "真っ直ぐで嘘がつけない", b: "柔軟でどんな環境にも馴染める", c: "個性的でこだわりが強い" },
             { q: "人から相談を受けることが多い？", a: "背中を押してほしい時に頼られる", b: "癒やしや安心を求めて寄ってこられる", c: "専門的な意見を聞きに来られる" },
             { q: "大勢での飲み会は好き？", a: "賑やかなのが大好き！盛り上げたい", b: "少人数で深く話す方が好き", c: "自分からは行かないが、誘われれば行く" },
@@ -184,7 +224,7 @@
 
                 document.getElementById('res-title').textContent = best.t;
                 document.getElementById('res-desc').textContent = best.d;
-                // 画像ファイル名は「salt.png」などの形式に調整してください
+                
                 const imgMap = {
                     "王道の「しお」": "salt.png",
                     "包容力の「お砂糖」": "sugar.png",
@@ -198,6 +238,21 @@
                     "孤高の「トリュフ塩」": "truffle.png"
                 };
                 document.getElementById('res-img').src = imgMap[best.t] || 'default.png';
+
+                // シェア機能の設定
+                const shareText = `【調味料診断】私の性格は「${best.t}」タイプでした！\n#調味料診断 #性格診断`;
+                const shareUrl = window.location.href;
+
+                document.getElementById('btn-x').onclick = () => {
+                    const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+                    window.open(xUrl, '_blank');
+                };
+
+                document.getElementById('btn-line').onclick = () => {
+                    const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+                    window.open(lineUrl, '_blank');
+                };
+
             }, 1800);
         }
     </script>
