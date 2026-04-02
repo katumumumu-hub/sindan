@@ -62,7 +62,7 @@
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); width: 100%; margin-bottom: 10px;
         }
 
-        .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .btn-share {
             padding: 12px; border: none; border-radius: 10px; color: white;
             font-weight: bold; font-size: 0.85rem; cursor: pointer;
@@ -70,7 +70,7 @@
         }
         .btn-x { background-color: var(--x-color); }
         .btn-line { background-color: var(--line-color); }
-        .btn-copy { background-color: var(--copy-color); grid-column: span 2; }
+        .btn-copy { background-color: var(--copy-color); grid-column: span 2; margin-top: 5px; }
 
         .hidden { display: none !important; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -84,7 +84,7 @@
             <div id="splash">
                 <div style="font-size: 3rem; margin-bottom: 10px;">🧂</div>
                 <h1>調味料タイプ診断</h1>
-                <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:25px;">20の質問で、あなたの隠れた性格を分析します。</p>
+                <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:25px;">20の質問で、あなたの性格を分析します。</p>
                 <button class="btn-action" onclick="start()">診断をはじめる</button>
             </div>
 
@@ -145,15 +145,15 @@
         ];
 
         const results = [
-            { t: "王道の「しお」", d: "素材の良さを引き出す天才。不可欠な存在です。", p: {A:8, B:2, C:0} },
+            { t: "王道の「しお」", d: "素材の良さを引き出す天才。シンプルながら、不可欠な存在です。", p: {A:8, B:2, C:0} },
             { t: "包容力の「お砂糖」", d: "周囲を甘く癒やすムードメーカー。トゲトゲした空気も丸く収まります。", p: {A:2, B:8, C:0} },
-            { t: "刺激的な「唐辛子」", d: "退屈な日常に火をつける情熱家。時に誰かの目を覚まさせます。", p: {A:10, B:0, C:0} },
-            { t: "深みのある「お味噌」", d: "一緒にいると安心する、日本人の心。温かい人情派です。", p: {A:0, B:10, C:0} },
+            { t: "刺激的な「唐辛子」", d: "退屈な日常に火をつける情熱家。あなたの言葉は誰かの目を覚まさせます。", p: {A:10, B:0, C:0} },
+            { t: "深みのある「お味噌」", d: "一緒にいると安心する、日本人の心。信頼関係を大切にする人情派です。", p: {A:0, B:10, C:0} },
             { t: "ギャップの「マヨネーズ」", d: "どんな相手とも仲良くなれる適応力。実は強い芯を持っています。", p: {A:5, B:5, C:0} },
             { t: "洗練された「バルサミコ酢」", d: "独特のセンスが光る知性派。大人の余裕とこだわりを持っています。", p: {A:0, B:3, C:7} },
-            { t: "魅惑の「スパイス」", d: "一筋縄ではいかないミステリアスな人。独特な魅力の虜になります。", p: {A:3, B:0, C:7} },
-            { t: "黄金の「ごま油」", d: "いるだけで場が華やぐ、香りの魔術師。全体の質がワンランクアップします。", p: {A:6, B:4, C:0} },
-            { t: "万能の「めんつゆ」", d: "何をやらせても器用にこなすマルチタレント。現代の賢者です。", p: {A:4, B:6, C:0} },
+            { t: "魅惑の「スパイス」", d: "ミステリアスで独特な感性の持ち主。一度会うと忘れられない魅力があります。", p: {A:3, B:0, C:7} },
+            { t: "黄金の「ごま油」", d: "いるだけで場が華やぐ香りの魔術師。全体の質をワンランク上げます。", p: {A:6, B:4, C:0} },
+            { t: "万能の「めんつゆ」", d: "何をやらせても器用にこなすマルチタレント。効率的に物事を進めます。", p: {A:4, B:6, C:0} },
             { t: "孤高の「トリュフ塩」", d: "滅多に出会えない希少な感性の持ち主。圧倒的なカリスマ性を秘めています。", p: {A:0, B:0, C:10} }
         ];
 
@@ -197,7 +197,6 @@
 
                 let best = results[0];
                 let max = -1;
-
                 results.forEach(r => {
                     let val = (score.A * r.p.A) + (score.B * r.p.B) + (score.C * r.p.C);
                     if (val > max) { max = val; best = r; }
@@ -223,24 +222,28 @@
                 const shareText = `【調味料診断】私のタイプは「${best.t}」でした！\n${best.d}\n#調味料診断`;
                 const shareUrl = window.location.href;
 
+                // X共有
                 document.getElementById('btn-x').onclick = () => {
                     const text = encodeURIComponent(shareText + "\n" + shareUrl);
                     location.href = `twitter://post?message=${text}`;
                     setTimeout(() => { window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank'); }, 600);
                 };
 
+                // LINE共有
                 document.getElementById('btn-line').onclick = () => {
                     location.href = `line://msg/text/${encodeURIComponent(shareText + "\n" + shareUrl)}`;
                 };
 
+                // コピーボタン
                 document.getElementById('btn-copy').onclick = function() {
                     const fullText = `${shareText}\n${shareUrl}`;
                     navigator.clipboard.writeText(fullText).then(() => {
                         this.textContent = "コピーしました！";
                         setTimeout(() => { this.textContent = "結果をコピーして共有"; }, 2000);
+                    }).catch(() => {
+                        alert("コピーに失敗しました。手動でコピーしてください。");
                     });
                 };
-
             }, 1800);
         }
     </script>
