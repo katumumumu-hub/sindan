@@ -8,57 +8,57 @@
     <title>【究極診断】あなたを調味料に例えると？</title>
     <style>
         :root {
-            -[span_0](start_span)-primary-bg: #fdfaf5;[span_0](end_span)
-            -[span_1](start_span)-card-bg: #ffffff;[span_1](end_span)
-            -[span_2](start_span)-accent-main: #e67e22;[span_2](end_span)
-            -[span_3](start_span)-accent-sub: #27ae60;[span_3](end_span)
-            -[span_4](start_span)-text-main: #4a4a4a;[span_4](end_span)
-            -[span_5](start_span)-text-muted: #888;[span_5](end_span)
+            --primary-bg: #fdfaf5;
+            --card-bg: #ffffff;
+            --accent-main: #e67e22;
+            --accent-sub: #27ae60;
+            --text-main: #4a4a4a;
+            --text-muted: #888;
             --line-color: #06C755;
             --x-color: #000000;
             --copy-color: #6c757d;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif; [span_6](start_span)}
-        body { background-color: var(--primary-bg); color: var(--text-main); overflow: hidden; }[span_6](end_span)
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif; }
+        body { background-color: var(--primary-bg); color: var(--text-main); overflow: hidden; }
 
         #app-container {
-            [span_7](start_span)width: 100vw; height: 100dvh;[span_7](end_span)
+            width: 100vw; height: 100dvh;
             display: flex; justify-content: center; align-items: center;
             background: linear-gradient(135deg, #fdfaf5 0%, #f3e5ab 100%);
-            [span_8](start_span)position: relative;[span_8](end_span)
+            position: relative;
         }
 
         #content {
-            [span_9](start_span)position: relative; z-index: 10; width: 92%; max-width: 500px;[span_9](end_span)
+            position: relative; z-index: 10; width: 92%; max-width: 500px;
             background: var(--card-bg); padding: 25px; border-radius: 20px;
-            [span_10](start_span)box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center;[span_10](end_span)
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center;
         }
 
-        h1 { font-size: 1.2rem; color: var(--accent-main); margin-bottom: 15px; [span_11](start_span)}
-        .question-text { font-size: 1.1rem; margin-bottom: 25px; min-height: 4.5rem; display: flex; align-items: center; justify-content: center; line-height: 1.6; font-weight: bold; }[span_11](end_span)
+        h1 { font-size: 1.2rem; color: var(--accent-main); margin-bottom: 15px; }
+        .question-text { font-size: 1.1rem; margin-bottom: 25px; min-height: 4.5rem; display: flex; align-items: center; justify-content: center; line-height: 1.6; font-weight: bold; }
         
-        .options-container { display: flex; flex-direction: column; gap: 12px; [span_12](start_span)}
+        .options-container { display: flex; flex-direction: column; gap: 12px; }
         .option-btn {
-            background: #fff; border: 2px solid #eee; padding: 16px;[span_12](end_span)
+            background: #fff; border: 2px solid #eee; padding: 16px;
             color: var(--text-main); border-radius: 12px; text-align: left; transition: 0.2s;
-            [span_13](start_span)font-size: 0.95rem; cursor: pointer;[span_13](end_span)
+            font-size: 0.95rem; cursor: pointer;
         }
-        .option-btn:active { background: var(--accent-main); color: white; border-color: var(--accent-main); [span_14](start_span)}
+        .option-btn:active { background: var(--accent-main); color: white; border-color: var(--accent-main); }
 
         #progress-bar {
-            position: absolute; top: 0; left: 0; height: 6px;[span_14](end_span)
-            [span_15](start_span)background: var(--accent-main); width: 0%; transition: width 0.3s;[span_15](end_span)
+            position: absolute; top: 0; left: 0; height: 6px;
+            background: var(--accent-main); width: 0%; transition: width 0.3s;
         }
 
-        .result-title { font-size: 1.6rem; color: var(--accent-main); margin: 10px 0; font-weight: bold; [span_16](start_span)}
-        .result-image { width: 80%; aspect-ratio: 1; margin: 0 auto 15px; image-rendering: pixelated; object-fit: contain; display: block; }[span_16](end_span)
-        .result-desc { font-size: 0.9rem; text-align: left; padding: 15px; background: #fff9f0; border-radius: 10px; margin-bottom: 20px; line-height: 1.6; [span_17](start_span)}
+        .result-title { font-size: 1.6rem; color: var(--accent-main); margin: 10px 0; font-weight: bold; }
+        .result-image { width: 80%; aspect-ratio: 1; margin: 0 auto 15px; image-rendering: pixelated; object-fit: contain; display: block; }
+        .result-desc { font-size: 0.9rem; text-align: left; padding: 15px; background: #fff9f0; border-radius: 10px; margin-bottom: 20px; line-height: 1.6; }
 
         .btn-action {
-            background: var(--accent-main); color: white;[span_17](end_span)
+            background: var(--accent-main); color: white;
             padding: 16px 40px; border: none; border-radius: 30px;
-            [span_18](start_span)font-weight: bold; cursor: pointer; font-size: 1rem;[span_18](end_span)
+            font-weight: bold; cursor: pointer; font-size: 1rem;
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); width: 100%; margin-bottom: 10px;
         }
 
@@ -72,9 +72,9 @@
         .btn-line { background-color: var(--line-color); }
         .btn-copy { background-color: var(--copy-color); grid-column: span 2; }
 
-        .hidden { display: none !important; [span_19](start_span)}
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }[span_19](end_span)
-        .loading-icon { font-size: 2rem; display: inline-block; animation: rotate 2s linear infinite; [span_20](start_span)}
+        .hidden { display: none !important; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .loading-icon { font-size: 2rem; display: inline-block; animation: rotate 2s linear infinite; }
     </style>
 </head>
 <body>
@@ -84,27 +84,27 @@
             <div id="splash">
                 <div style="font-size: 3rem; margin-bottom: 10px;">🧂</div>
                 <h1>調味料タイプ診断</h1>
-                <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:25px;">20の質問で、あなたの隠れた性格を分析します。</p>[span_20](end_span)
-                [span_21](start_span)<button class="btn-action" onclick="start()">診断をはじめる</button>[span_21](end_span)
+                <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:25px;">20の質問で、あなたの隠れた性格を分析します。</p>
+                <button class="btn-action" onclick="start()">診断をはじめる</button>
             </div>
 
-            [span_22](start_span)<div id="question-screen" class="hidden">[span_22](end_span)
+            <div id="question-screen" class="hidden">
                 <p id="q-num" style="font-size:0.8rem; color:var(--accent-sub); margin-bottom:5px; font-weight: bold;"></p>
                 <p class="question-text" id="q-text"></p>
                 <div class="options-container">
-                    <button class="option-btn" onclick="next('A')">A. [span_23](start_span)<span id="optA"></span></button>[span_23](end_span)
-                    <button class="option-btn" onclick="next('B')">B. [span_24](start_span)<span id="optB"></span></button>[span_24](end_span)
-                    <button class="option-btn" onclick="next('C')">C. [span_25](start_span)<span id="optC"></span></button>[span_25](end_span)
+                    <button class="option-btn" onclick="next('A')">A. <span id="optA"></span></button>
+                    <button class="option-btn" onclick="next('B')">B. <span id="optB"></span></button>
+                    <button class="option-btn" onclick="next('C')">C. <span id="optC"></span></button>
                 </div>
             </div>
 
-            [span_26](start_span)<div id="loading" class="hidden">[span_26](end_span)
+            <div id="loading" class="hidden">
                 <div class="loading-icon">🍳</div>
-                [span_27](start_span)<p style="margin-top: 15px;">あなたの成分を調合中...</p>[span_27](end_span)
+                <p style="margin-top: 15px;">あなたの成分を調合中...</p>
             </div>
           
-            [span_28](start_span)<div id="result-screen" class="hidden">[span_28](end_span)
-                [span_29](start_span)<p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">あなたのタイプは…</p>[span_29](end_span)
+            <div id="result-screen" class="hidden">
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">あなたのタイプは…</p>
                 <p class="result-title" id="res-title"></p>
                 <img src="" id="res-img" class="result-image">
                 <div class="result-desc" id="res-desc"></div>
@@ -115,114 +115,124 @@
                     <button class="btn-share btn-copy" id="btn-copy">結果をコピーして共有</button>
                 </div>
 
-                [span_30](start_span)<button class="btn-action" style="background: #ccc; box-shadow: none;" onclick="location.reload()">もう一度診断する</button>[span_30](end_span)
+                <button class="btn-action" style="background: #ccc; box-shadow: none;" onclick="location.reload()">もう一度診断する</button>
             </div>
         </div>
     </div>
 
     <script>
         const questions = [
-            [span_31](start_span){ q: "休日の過ごし方は？", a: "計画を立ててアクティブに動く", b: "その時の気分でぶらぶらする", c: "家で静かに趣味に没頭する" },[span_31](end_span)
-            [span_32](start_span){ q: "初対面の人と話すときは？", a: "自分から積極的に話題を振る", b: "相手の話に合わせて聞き役に回る", c: "共通の話題が見つかるまで様子を見る" },[span_32](end_span)
-            [span_33](start_span){ q: "仕事や課題への取り組み方は？", a: "とにかくスピード重視で片付ける", b: "丁寧に、ミスがないよう進める", c: "独自の工夫やこだわりを詰め込む" },[span_33](end_span)
-            [span_34](start_span){ q: "友達が落ち込んでいたら？", a: "元気づけるために遊びに誘う", b: "ただ隣にいて話をじっくり聞く", c: "解決策を一緒に論理的に考える" },[span_34](end_span)
-            [span_35](start_span){ q: "あなたの机の上はどんな状態？", a: "整理整頓され、何がどこにあるか明確", b: "適度に散らかっているが使いやすい", c: "自分にしかわからない独特な配置" },[span_35](end_span)
-            [span_36](start_span){ q: "新しいお店に入るときは？", a: "人気ランキング1位を注文する", b: "直感で美味しそうなものを選ぶ", c: "あまり人が頼まない珍しいものに挑戦" },[span_36](end_span)
-            [span_37](start_span){ q: "サプライズを仕掛けるのは好き？", a: "大好き！相手の驚く顔が見たい", b: "されるのはいいけど、やるのは苦手", c: "平穏が一番。サプライズは不要" },[span_37](end_span)
-            [span_38](start_span){ q: "トラブルが起きた時の反応は？", a: "真っ先に状況を整理して指示を出す", b: "周囲を落ち着かせようとなだめる", c: "一人で黙々と解決策を実行する" },[span_38](end_span)
-            [span_39](start_span){ q: "自分の性格を一言で言うなら？", a: "真っ直ぐで嘘がつけない", b: "柔軟でどんな環境にも馴染める", c: "個性的でこだわりが強い" },[span_39](end_span)
-            [span_40](start_span){ q: "人から相談を受けることが多い？", a: "背中を押してほしい時に頼られる", b: "癒やしや安心を求めて寄ってこられる", c: "専門的な意見を聞きに来られる" },[span_40](end_span)
-            [span_41](start_span){ q: "大勢での飲み会は好き？", a: "賑やかなのが大好き！盛り上げたい", b: "少人数で深く話す方が好き", c: "自分からは行かないが、誘われれば行く" },[span_41](end_span)
-            [span_42](start_span){ q: "SNSへの投稿スタイルは？", a: "日常を頻繁にアップする", b: "たまに綺麗な写真だけ載せる", c: "見る専門で自分からは出さない" },[span_42](end_span)
-            [span_43](start_span){ q: "約束の時間に対しては？", a: "5分前には到着している", b: "ぴったり、もしくは少し遅れる", c: "相手が来るまで別の場所で時間を潰す" },[span_43](end_span)
-            [span_44](start_span){ q: "欲しいものを見つけたら？", a: "その場ですぐに買ってしまう", b: "一晩寝て、本当に必要か考える", c: "口コミを徹底的に調べてから決める" },[span_44](end_span)
-            [span_45](start_span){ q: "映画を観るならどのジャンル？", a: "スカッとするアクションやコメディ", b: "心温まるヒューマンドラマ", c: "考察しがいのあるミステリーやSF" },[span_45](end_span)
-            [span_46](start_span){ q: "自分の長所はどこだと思う？", a: "行動力とリーダーシップ", b: "協調性とバランス感覚", c: "探究心と独自の視点" },[span_46](end_span)
-            [span_47](start_span){ q: "怒った時はどうなる？", a: "その場ではっきりと言葉に出す", b: "黙って距離を置く", c: "なぜそうなったか理詰めで説明する" },[span_47](end_span)
-            [span_48](start_span){ q: "理想のリーダー像は？", a: "皆を力強く引っ張っていくタイプ", b: "皆の意見をまとめて調整するタイプ", c: "背中で語る、職人気質なタイプ" },[span_48](end_span)
-            [span_49](start_span){ q: "今の生活に満足している？", a: "もっと刺激が欲しい！", b: "このまま穏やかに続いてほしい", c: "何か新しい変革を起こしたい" },[span_49](end_span)
-            [span_50](start_span){ q: "最後に、あなたは「主役」になりたい？", a: "なるからには主役がいい", b: "脇役として主役を支えたい", c: "誰にも縛られない観客でいたい" }[span_50](end_span)
+            { q: "休日の過ごし方は？", a: "計画を立ててアクティブに動く", b: "その時の気分でぶらぶらする", c: "家で静かに趣味に没頭する" },
+            { q: "初対面の人と話すときは？", a: "自分から積極的に話題を振る", b: "相手の話に合わせて聞き役に回る", c: "共通の話題が見つかるまで様子を見る" },
+            { q: "仕事や課題への取り組み方は？", a: "とにかくスピード重視で片付ける", b: "丁寧に、ミスがないよう進める", c: "独自の工夫やこだわりを詰め込む" },
+            { q: "友達が落ち込んでいたら？", a: "元気づけるために遊びに誘う", b: "ただ隣にいて話をじっくり聞く", c: "解決策を一緒に論理的に考える" },
+            { q: "あなたの机の上はどんな状態？", a: "整理整頓され、何がどこにあるか明確", b: "適度に散らかっているが使いやすい", c: "自分にしかわからない独特な配置" },
+            { q: "新しいお店に入るときは？", a: "人気ランキング1位を注文する", b: "直感で美味しそうなものを選ぶ", c: "あまり人が頼まない珍しいものに挑戦" },
+            { q: "サプライズを仕掛けるのは好き？", a: "大好き！相手の驚く顔が見たい", b: "されるのはいいけど、やるのは苦手", c: "平穏が一番。サプライズは不要" },
+            { q: "トラブルが起きた時の反応は？", a: "真っ先に状況を整理して指示を出す", b: "周囲を落ち着かせようとなだめる", c: "一人で黙々と解決策を実行する" },
+            { q: "自分の性格を一言で言うなら？", a: "真っ直ぐで嘘がつけない", b: "柔軟でどんな環境にも馴染める", c: "個性的でこだわりが強い" },
+            { q: "人から相談を受けることが多い？", a: "背中を押してほしい時に頼られる", b: "癒やしや安心を求めて寄ってこられる", c: "専門的な意見を聞きに来られる" },
+            { q: "大勢での飲み会は好き？", a: "賑やかなのが大好き！盛り上げたい", b: "少人数で深く話す方が好き", c: "自分からは行かないが、誘われれば行く" },
+            { q: "SNSへの投稿スタイルは？", a: "日常を頻繁にアップする", b: "たまに綺麗な写真だけ載せる", c: "見る専門で自分からは出さない" },
+            { q: "約束の時間に対しては？", a: "5分前には到着している", b: "ぴったり、もしくは少し遅れる", c: "相手が来るまで別の場所で時間を潰す" },
+            { q: "欲しいものを見つけたら？", a: "その場ですぐに買ってしまう", b: "一晩寝て、本当に必要か考える", c: "口コミを徹底的に調べてから決める" },
+            { q: "映画を観るならどのジャンル？", a: "スカッとするアクションやコメディ", b: "心温まるヒューマンドラマ", c: "考察しがいのあるミステリーやSF" },
+            { q: "自分の長所はどこだと思う？", a: "行動力とリーダーシップ", b: "協調性とバランス感覚", c: "探究心と独自の視点" },
+            { q: "怒った時はどうなる？", a: "その場ではっきりと言葉に出す", b: "黙って距離を置く", c: "なぜそうなったか理詰めで説明する" },
+            { q: "理想のリーダー像は？", a: "皆を力強く引っ張っていくタイプ", b: "皆の意見をまとめて調整するタイプ", c: "背中で語る、職人気質なタイプ" },
+            { q: "今の生活に満足している？", a: "もっと刺激が欲しい！", b: "このまま穏やかに続いてほしい", c: "何か新しい変革を起こしたい" },
+            { q: "最後に、あなたは「主役」になりたい？", a: "なるからには主役がいい", b: "脇役として主役を支えたい", c: "誰にも縛られない観客でいたい" }
         ];
 
         const results = [
-            [span_51](start_span){ t: "王道の「しお」", d: "素材の良さを引き出す天才。不可欠な存在です。", p: {A:8, B:2, C:0} },[span_51](end_span)
-            [span_52](start_span){ t: "包容力の「お砂糖」", d: "周囲を甘く癒やすムードメーカー。トゲトゲした空気も丸く収まります。", p: {A:2, B:8, C:0} },[span_52](end_span)
-            [span_53](start_span){ t: "刺激的な「唐辛子」", d: "退屈な日常に火をつける情熱家。時に誰かの目を覚まさせます。", p: {A:10, B:0, C:0} },[span_53](end_span)
-            [span_54](start_span){ t: "深みのある「お味噌」", d: "一緒にいると安心する、日本人の心。温かい人情派です。", p: {A:0, B:10, C:0} },[span_54](end_span)
-            [span_55](start_span){ t: "ギャップの「マヨネーズ」", d: "どんな相手とも仲良くなれる適応力。実は強い芯を持っています。", p: {A:5, B:5, C:0} },[span_55](end_span)
-            [span_56](start_span){ t: "洗練された「バルサミコ酢」", d: "独特のセンスが光る知性派。大人の余裕とこだわりを持っています。", p: {A:0, B:3, C:7} },[span_56](end_span)
-            [span_57](start_span){ t: "魅惑の「スパイス」", d: "一筋縄ではいかないミステリアスな人。独特な魅力の虜になります。", p: {A:3, B:0, C:7} },[span_57](end_span)
-            [span_58](start_span){ t: "黄金の「ごま油」", d: "いるだけで場が華やぐ、香りの魔術師。全体の質がワンランクアップします。", p: {A:6, B:4, C:0} },[span_58](end_span)
-            [span_59](start_span){ t: "万能の「めんつゆ」", d: "何をやらせても器用にこなすマルチタレント。現代の賢者です。", p: {A:4, B:6, C:0} },[span_59](end_span)
-            [span_60](start_span){ t: "孤高の「トリュフ塩」", d: "滅多に出会えない希少な感性の持ち主。圧倒的なカリスマ性を秘めています。", p: {A:0, B:0, C:10} }[span_60](end_span)
+            { t: "王道の「しお」", d: "素材の良さを引き出す天才。不可欠な存在です。", p: {A:8, B:2, C:0} },
+            { t: "包容力の「お砂糖」", d: "周囲を甘く癒やすムードメーカー。トゲトゲした空気も丸く収まります。", p: {A:2, B:8, C:0} },
+            { t: "刺激的な「唐辛子」", d: "退屈な日常に火をつける情熱家。時に誰かの目を覚まさせます。", p: {A:10, B:0, C:0} },
+            { t: "深みのある「お味噌」", d: "一緒にいると安心する、日本人の心。温かい人情派です。", p: {A:0, B:10, C:0} },
+            { t: "ギャップの「マヨネーズ」", d: "どんな相手とも仲良くなれる適応力。実は強い芯を持っています。", p: {A:5, B:5, C:0} },
+            { t: "洗練された「バルサミコ酢」", d: "独特のセンスが光る知性派。大人の余裕とこだわりを持っています。", p: {A:0, B:3, C:7} },
+            { t: "魅惑の「スパイス」", d: "一筋縄ではいかないミステリアスな人。独特な魅力の虜になります。", p: {A:3, B:0, C:7} },
+            { t: "黄金の「ごま油」", d: "いるだけで場が華やぐ、香りの魔術師。全体の質がワンランクアップします。", p: {A:6, B:4, C:0} },
+            { t: "万能の「めんつゆ」", d: "何をやらせても器用にこなすマルチタレント。現代の賢者です。", p: {A:4, B:6, C:0} },
+            { t: "孤高の「トリュフ塩」", d: "滅多に出会えない希少な感性の持ち主。圧倒的なカリスマ性を秘めています。", p: {A:0, B:0, C:10} }
         ];
 
-        [span_61](start_span)let step = 0;[span_61](end_span)
-        [span_62](start_span)let score = { A: 0, B: 0, C: 0 };[span_62](end_span)
+        let step = 0;
+        let score = { A: 0, B: 0, C: 0 };
 
         function start() {
-            [span_63](start_span)document.getElementById('splash').classList.add('hidden');[span_63](end_span)
-            [span_64](start_span)document.getElementById('question-screen').classList.remove('hidden');[span_64](end_span)
-            [span_65](start_span)render();[span_65](end_span)
+            document.getElementById('splash').classList.add('hidden');
+            document.getElementById('question-screen').classList.remove('hidden');
+            render();
         }
 
         function render() {
-            [span_66](start_span)if (step < questions.length) {[span_66](end_span)
-                [span_67](start_span)const q = questions[step];[span_67](end_span)
-                [span_68](start_span)document.getElementById('q-num').textContent = `STEP ${step + 1} / ${questions.length}`;[span_68](end_span)
-                [span_69](start_span)document.getElementById('q-text').textContent = q.q;[span_69](end_span)
-                [span_70](start_span)document.getElementById('optA').textContent = q.a;[span_70](end_span)
-                [span_71](start_span)document.getElementById('optB').textContent = q.b;[span_71](end_span)
-                [span_72](start_span)document.getElementById('optC').textContent = q.c;[span_72](end_span)
-                [span_73](start_span)document.getElementById('progress-bar').style.width = `${(step / questions.length) * 100}%`;[span_73](end_span)
+            if (step < questions.length) {
+                const q = questions[step];
+                document.getElementById('q-num').textContent = `STEP ${step + 1} / ${questions.length}`;
+                document.getElementById('q-text').textContent = q.q;
+                document.getElementById('optA').textContent = q.a;
+                document.getElementById('optB').textContent = q.b;
+                document.getElementById('optC').textContent = q.c;
+                document.getElementById('progress-bar').style.width = `${(step / questions.length) * 100}%`;
             } else {
-                [span_74](start_span)showResult();[span_74](end_span)
+                showResult();
             }
         }
 
         function next(ans) {
-            [span_75](start_span)score[ans]++;[span_75](end_span)
-            [span_76](start_span)step++;[span_76](end_span)
-            [span_77](start_span)render();[span_77](end_span)
+            score[ans]++;
+            step++;
+            render();
         }
 
         function showResult() {
-            [span_78](start_span)document.getElementById('question-screen').classList.add('hidden');[span_78](end_span)
-            [span_79](start_span)document.getElementById('loading').classList.remove('hidden');[span_79](end_span)
-            [span_80](start_span)document.getElementById('progress-bar').style.width = '100%';[span_80](end_span)
+            document.getElementById('question-screen').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = '100%';
 
             setTimeout(() => {
-                [span_81](start_span)document.getElementById('loading').classList.add('hidden');[span_81](end_span)
-                [span_82](start_span)document.getElementById('result-screen').classList.remove('hidden');[span_82](end_span)
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('result-screen').classList.remove('hidden');
 
-                [span_83](start_span)let best = results[0];[span_83](end_span)
-                [span_84](start_span)let max = -1;[span_84](end_span)
+                let best = results[0];
+                let max = -1;
 
-                [span_85](start_span)results.forEach(r => {[span_85](end_span)
-                    [span_86](start_span)let val = (score.A * r.p.A) + (score.B * r.p.B) + (score.C * r.p.C);[span_86](end_span)
-                    if (val > max) { max = val; best = r; [span_87](start_span)}
+                results.forEach(r => {
+                    let val = (score.A * r.p.A) + (score.B * r.p.B) + (score.C * r.p.C);
+                    if (val > max) { max = val; best = r; }
                 });
 
-                document.getElementById('res-title').textContent = best.t;[span_87](end_span)
-                [span_88](start_span)document.getElementById('res-desc').textContent = best.d;[span_88](end_span)
-                document.getElementById('res-img').src = (best.t.includes('しお') ? 'salt.png' : 'default.png'); [span_89](start_span)// 簡易マッピング[span_89](end_span)
+                document.getElementById('res-title').textContent = best.t;
+                document.getElementById('res-desc').textContent = best.d;
+                
+                const imgMap = {
+                    "王道の「しお」": "salt.png",
+                    "包容力の「お砂糖」": "sugar.png",
+                    "刺激的な「唐辛子」": "chili.png",
+                    "深みのある「お味噌」": "miso.png",
+                    "ギャップの「マヨネーズ」": "mayo.png",
+                    "洗練された「バルサミコ酢」": "vinegar.png",
+                    "魅惑の「スパイス」": "spice.png",
+                    "黄金の「ごま油」": "sesameoil.png",
+                    "万能の「めんつゆ」": "tsuyu.png",
+                    "孤高の「トリュフ塩」": "truffle.png"
+                };
+                document.getElementById('res-img').src = imgMap[best.t] || 'default.png';
 
                 const shareText = `【調味料診断】私のタイプは「${best.t}」でした！\n${best.d}\n#調味料診断`;
                 const shareUrl = window.location.href;
 
-                // X共有（アプリ起動優先）
                 document.getElementById('btn-x').onclick = () => {
                     const text = encodeURIComponent(shareText + "\n" + shareUrl);
                     location.href = `twitter://post?message=${text}`;
                     setTimeout(() => { window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank'); }, 600);
                 };
 
-                // LINE共有（アプリ起動優先）
                 document.getElementById('btn-line').onclick = () => {
                     location.href = `line://msg/text/${encodeURIComponent(shareText + "\n" + shareUrl)}`;
                 };
 
-                // コピー機能
                 document.getElementById('btn-copy').onclick = function() {
                     const fullText = `${shareText}\n${shareUrl}`;
                     navigator.clipboard.writeText(fullText).then(() => {
@@ -231,7 +241,7 @@
                     });
                 };
 
-            [span_90](start_span)}, 1800);[span_90](end_span)
+            }, 1800);
         }
     </script>
 </body>
