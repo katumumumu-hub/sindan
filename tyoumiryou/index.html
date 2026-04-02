@@ -5,28 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>【究極】調味料性格診断 - あなたの「味」を分析</title>
+    <title>【究極】調味料性格診断</title>
     <style>
         :root {
             --primary-bg: #fdfaf5;
             --card-bg: #ffffff;
-            --accent-main: #c0392b; /* 洗練されたボルドー */
-            --accent-sub: #16a085; /* エメラルドグリーン */
+            --accent-main: #c0392b; 
+            --accent-sub: #16a085;
             --text-main: #2c3e50;
             --text-muted: #95a5a6;
             --line-color: #06C755;
             --x-color: #000000;
             --copy-color: #7f8c8d;
             --border-radius: 16px;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
-            --transition: all 0.3s ease;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -42,165 +40,94 @@
         }
 
         #app-container {
-            width: 92%;
-            max-width: 480px;
-            height: auto;
-            max-height: 90vh;
+            width: 94%;
+            max-width: 420px;
             background: var(--card-bg);
-            padding: 30px 25px;
+            padding: 20px 15px;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             text-align: center;
             position: relative;
-            overflow-y: auto;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
         }
 
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        /* スタート画面 */
-        #splash .icon { font-size: 4rem; margin-bottom: 15px; display: block; }
-        h1 { font-size: 1.5rem; color: var(--accent-main); margin-bottom: 10px; font-weight: 800; }
-        #splash p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
-
-        /* 質問画面 */
-        #q-num { font-size: 0.8rem; color: var(--accent-sub); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .question-text { font-size: 1.2rem; margin-bottom: 30px; min-height: 5rem; display: flex; align-items: center; justify-content: center; line-height: 1.5; font-weight: 700; color: var(--text-main); }
-        .options-container { display: flex; flex-direction: column; gap: 15px; }
+        /* 質問画面の調整 */
+        .question-text { font-size: 1.1rem; margin-bottom: 20px; min-height: 4rem; display: flex; align-items: center; justify-content: center; line-height: 1.4; font-weight: 700; }
         .option-btn {
-            background: #fff;
-            border: 2px solid #edf2f7;
-            padding: 18px 20px;
-            color: var(--text-main);
-            border-radius: 12px;
-            text-align: left;
-            transition: var(--transition);
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: 500;
-            position: relative;
-        }
-        .option-btn:hover, .option-btn:active {
-            border-color: var(--accent-main);
-            background-color: #fef5f4;
-            transform: translateY(-2px);
+            background: #fff; border: 2px solid #edf2f7; padding: 14px 15px;
+            color: var(--text-main); border-radius: 10px; text-align: left;
+            font-size: 0.9rem; cursor: pointer; font-weight: 500; margin-bottom: 10px; width: 100%;
         }
 
         /* プログレスバー */
-        #progress-bar {
-            position: fixed; top: 0; left: 0; height: 5px;
-            background: var(--accent-main);
-            width: 0%; transition: width 0.3s ease;
-            z-index: 1000;
-        }
+        #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: var(--accent-main); width: 0%; z-index: 1000; }
 
-        /* 結果画面 */
-        .result-intro { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px; }
-        .result-title { font-size: 1.8rem; color: var(--accent-main); margin: 10px 0 20px; font-weight: 800; }
+        /* 結果画面の1画面集約調整 */
+        .result-intro { font-size: 0.8rem; color: var(--text-muted); }
+        .result-title { font-size: 1.5rem; color: var(--accent-main); margin: 5px 0 10px; font-weight: 800; }
         
-        /* レーダーチャート */
         #chart-container {
             width: 100%;
-            max-width: 300px;
+            max-width: 240px; /* 少し小さくしてスペース確保 */
             aspect-ratio: 1;
-            margin: 0 auto 25px;
-            position: relative;
+            margin: 0 auto 10px;
         }
-        #chartCanvas { width: 100%; height: 100%; }
 
-        .result-desc { font-size: 0.95rem; text-align: left; padding: 20px; background: #fef5f4; border-radius: 12px; margin-bottom: 25px; line-height: 1.7; color: var(--text-main); border-left: 4px solid var(--accent-main); }
+        .result-desc { font-size: 0.85rem; text-align: left; padding: 12px; background: #fef5f4; border-radius: 10px; margin-bottom: 12px; line-height: 1.5; border-left: 4px solid var(--accent-main); }
 
-        /* 相性エリア */
-        .compatibility-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .comp-box {
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-        }
+        .compatibility-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .comp-box { padding: 8px; border-radius: 8px; }
         .comp-good { background-color: #e6fffa; border: 1px solid #b2f5ea; color: #00684a; }
         .comp-bad { background-color: #fff5f5; border: 1px solid #feb2b2; color: #9b2c2c; }
-        .comp-label { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-        .comp-type { font-size: 1rem; font-weight: 700; }
+        .comp-label { font-size: 0.65rem; font-weight: bold; margin-bottom: 2px; display: block; }
+        .comp-type { font-size: 0.85rem; font-weight: 700; }
 
-        /* ボタン */
         .btn-action {
-            background: var(--accent-main);
-            color: white;
-            padding: 18px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 1.1rem;
-            width: 100%;
-            margin-bottom: 15px;
-            transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(192, 57, 43, 0.2);
-        }
-        .btn-action:hover, .btn-action:active {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(192, 57, 43, 0.3);
-            background-color: #a93226;
+            background: var(--accent-main); color: white; padding: 12px;
+            border: none; border-radius: 25px; font-weight: 700; font-size: 1rem; width: 100%;
         }
 
-        .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
         .btn-share {
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: var(--transition);
+            padding: 10px; border: none; border-radius: 8px; color: white;
+            font-weight: 700; font-size: 0.8rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
         }
-        .btn-share:active { transform: scale(0.97); }
         .btn-x { background-color: var(--x-color); }
         .btn-line { background-color: var(--line-color); }
-        .btn-copy { background-color: var(--copy-color); grid-column: span 2; margin-top: 5px; }
+        .btn-copy { background-color: var(--copy-color); grid-column: span 2; }
 
         .hidden { display: none !important; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .loading-icon { font-size: 3rem; display: inline-block; animation: rotate 2s linear infinite; margin-bottom: 20px; }
+        .loading-icon { font-size: 2.5rem; animation: rotate 2s linear infinite; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div id="progress-bar"></div>
     <div id="app-container">
         <div id="splash">
-            <span class="icon">🧂</span>
+            <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🧂</span>
             <h1>調味料性格診断</h1>
-            <p>20の質問で、あなたの隠れた性格と<br>周囲との「相性」を、独自の味覚アルゴリズムで分析します。</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">あなたの性格と相性を分析します。</p>
             <button class="btn-action" onclick="start()">診断をはじめる</button>
         </div>
 
         <div id="question-screen" class="hidden">
-            <p id="q-num"></p>
+            <p id="q-num" style="font-size: 0.75rem; color: var(--accent-sub); font-weight: bold; margin-bottom: 8px;"></p>
             <p class="question-text" id="q-text"></p>
             <div class="options-container">
-                <button class="option-btn" onclick="next('A')"> <span id="optA"></span></button>
-                <button class="option-btn" onclick="next('B')"> <span id="optB"></span></button>
-                <button class="option-btn" onclick="next('C')"> <span id="optC"></span></button>
+                <button class="option-btn" onclick="next('A')"><span id="optA"></span></button>
+                <button class="option-btn" onclick="next('B')"><span id="optB"></span></button>
+                <button class="option-btn" onclick="next('C')"><span id="optC"></span></button>
             </div>
         </div>
 
         <div id="loading" class="hidden">
             <div class="loading-icon">🍳</div>
-            <p style="color: var(--text-muted); font-size: 1rem;">あなたの成分を調合中...</p>
+            <p>分析中...</p>
         </div>
       
         <div id="result-screen" class="hidden">
-            <p class="result-intro">あなたのタイプは…</p>
+            <p class="result-intro">診断結果</p>
             <p class="result-title" id="res-title"></p>
             
             <div id="chart-container">
@@ -211,62 +138,60 @@
 
             <div class="compatibility-container">
                 <div class="comp-box comp-good">
-                    <span class="comp-label">Good 相性</span>
+                    <span class="comp-label">GOOD 相性</span>
                     <span class="comp-type" id="comp-good-type"></span>
                 </div>
                 <div class="comp-box comp-bad">
-                    <span class="comp-label">Bad 相性</span>
+                    <span class="comp-label">BAD 相性</span>
                     <span class="comp-type" id="comp-bad-type"></span>
                 </div>
             </div>
 
             <div class="share-grid">
                 <button class="btn-share btn-x" id="btn-x">Xでシェア</button>
-                <button class="btn-share btn-line" id="btn-line">LINEで送る</button>
-                <button class="btn-share btn-copy" id="btn-copy">結果と相性をコピー</button>
+                <button class="btn-share btn-line" id="btn-line">LINE</button>
+                <button class="btn-share btn-copy" id="btn-copy">結果をコピー</button>
             </div>
 
-            <button class="btn-action" style="background: #edf2f7; color: var(--text-main); box-shadow: none; font-size: 0.95rem; padding: 15px;" onclick="location.reload()">もう一度診断する</button>
+            <p style="font-size: 0.7rem; color: var(--text-muted); cursor: pointer;" onclick="location.reload()">もう一度診断する</p>
         </div>
     </div>
 
     <script>
-        // 質問データ（内容はそのまま）
         const questions = [
-            { q: "休日の過ごし方は？", a: "計画を立ててアクティブに動く", b: "その時の気分でぶらぶらする", c: "家で静かに趣味に没頭する" },
-            { q: "初対面の人と話すときは？", a: "自分から積極的に話題を振る", b: "相手の話に合わせて聞き役に回る", c: "共通の話題が見つかるまで様子を見る" },
-            { q: "仕事や課題への取り組み方は？", a: "とにかくスピード重視で片付ける", b: "丁寧に、ミスがないよう進める", c: "独自の工夫やこだわりを詰め込む" },
-            { q: "友達が落ち込んでいたら？", a: "元気づけるために遊びに誘う", b: "ただ隣にいて話をじっくり聞く", c: "解決策を一緒に論理的に考える" },
-            { q: "あなたの机の上はどんな状態？", a: "整理整頓され、何がどこにあるか明確", b: "適度に散らかっているが使いやすい", c: "自分にしかわからない独特な配置" },
-            { q: "新しいお店に入るときは？", a: "人気ランキング1位を注文する", b: "直感で美味しそうなものを選ぶ", c: "あまり人が頼まない珍しいものに挑戦" },
-            { q: "サプライズを仕掛けるのは好き？", a: "大好き！相手の驚く顔が見たい", b: "されるのはいいけど、やるのは苦手", c: "平穏が一番。サプライズは不要" },
-            { q: "トラブルが起きた時の反応は？", a: "真っ先に状況を整理して指示を出す", b: "周囲を落ち着かせようとなだめる", c: "一人で黙々と解決策を実行する" },
-            { q: "自分の性格を一言で言うなら？", a: "真っ直ぐで嘘がつけない", b: "柔軟でどんな環境にも馴染める", c: "個性的でこだわりが強い" },
-            { q: "人から相談を受けることが多い？", a: "背中を押してほしい時に頼られる", b: "癒やしや安心を求めて寄ってこられる", c: "専門的な意見を聞きに来られる" },
-            { q: "大勢での飲み会は好き？", a: "賑やかなのが大好き！盛り上げたい", b: "少人数で深く話す方が好き", c: "自分からは行かないが、誘われれば行く" },
-            { q: "SNSへの投稿スタイルは？", a: "日常を頻繁にアップする", b: "たまに綺麗な写真だけ載せる", c: "見る専門で自分からは出さない" },
-            { q: "約束の時間に対しては？", a: "5分前には到着している", b: "ぴったり、もしくは少し遅れる", c: "相手が来るまで別の場所で時間を潰す" },
-            { q: "欲しいものを見つけたら？", a: "その場ですぐに買ってしまう", b: "一晩寝て、本当に必要か考える", c: "口コミを徹底的に調べてから決める" },
-            { q: "映画を観るならどのジャンル？", a: "スカッとするアクションやコメディ", b: "心温まるヒューマンドラマ", c: "考察しがいのあるミステリーやSF" },
-            { q: "自分の長所はどこだと思う？", a: "行動力とリーダーシップ", b: "協調性とバランス感覚", c: "探究心と独自の視点" },
-            { q: "怒った時はどうなる？", a: "その場ではっきりと言葉に出す", b: "黙って距離を置く", c: "なぜそうなったか理詰めで説明する" },
-            { q: "理想のリーダー像は？", a: "皆を力強く引っ張っていくタイプ", b: "皆の意見をまとめて調整するタイプ", c: "背中で語る、職人気質なタイプ" },
-            { q: "今の生活に満足している？", a: "もっと刺激が欲しい！", b: "このまま穏やかに続いてほしい", c: "何か新しい変革を起こしたい" },
-            { q: "最後に、あなたは「主役」になりたい？", a: "なるからには主役がいい", b: "脇役として主役を支えたい", c: "誰にも縛られない観客でいたい" }
+            { q: "休日の過ごし方は？", a: "計画を立ててアクティブに", b: "その時の気分でぶらぶら", c: "家で静かに趣味に没頭" },
+            { q: "初対面の人と話すときは？", a: "自分から積極的に話題を振る", b: "聞き役に回る", c: "共通の話題を探して様子見" },
+            { q: "仕事への取り組み方は？", a: "スピード重視で片付ける", b: "丁寧にミスなく進める", c: "独自のこだわりを詰め込む" },
+            { q: "友達が落ち込んでいたら？", a: "遊びに誘って元気づける", b: "隣で話をじっくり聞く", c: "解決策を論理的に考える" },
+            { q: "机の上はどんな状態？", a: "整理整頓されている", b: "適度に散らかっている", c: "独特な配置がある" },
+            { q: "新しいお店に入ったら？", a: "人気1位を注文する", b: "直感で選ぶ", c: "珍しいものに挑戦する" },
+            { q: "サプライズを仕掛けるのは？", a: "大好き！", b: "やるのは苦手", c: "不要。平穏が一番" },
+            { q: "トラブルが起きたら？", a: "状況整理して指示を出す", b: "周囲をなだめる", c: "一人で黙々と解決する" },
+            { q: "自分の性格は？", a: "真っ直ぐで嘘がつけない", b: "柔軟で馴染みやすい", c: "個性的でこだわりが強い" },
+            { q: "人から相談を受ける？", a: "背中を押してほしい時", b: "癒やしを求められる時", c: "専門意見を求められる時" },
+            { q: "大勢での飲み会は？", a: "賑やかなのが好き", b: "少人数がいい", c: "誘われれば行く" },
+            { q: "SNSへの投稿は？", a: "頻繁にアップする", b: "たまに綺麗な写真だけ", c: "見る専門" },
+            { q: "約束の時間に対しては？", a: "5分前には到着", b: "ぴったり、少し遅れる", c: "別の場所で時間を潰す" },
+            { q: "欲しいものを見つけたら？", a: "すぐ買ってしまう", b: "一晩寝て考える", c: "口コミを徹底調査" },
+            { q: "映画を観るなら？", a: "アクションやコメディ", b: "ヒューマンドラマ", c: "ミステリーやSF" },
+            { q: "自分の長所は？", a: "行動力", b: "協調性", c: "探究心" },
+            { q: "怒った時はどうなる？", a: "はっきり口に出す", b: "黙って距離を置く", c: "理詰めで説明する" },
+            { q: "理想のリーダーは？", a: "力強く引っ張る", b: "意見をまとめる", c: "背中で語る職人肌" },
+            { q: "今の生活に満足？", a: "刺激が欲しい", b: "穏やかに続いてほしい", c: "新しい変革を起こしたい" },
+            { q: "「主役」になりたい？", a: "主役がいい", b: "脇役で支えたい", c: "自由な観客でいたい" }
         ];
 
-        // 診断結果データ（相性データを追加）
         const results = [
-            { id: 0, t: "王道の「しお」", d: "素材の良さを引き出す天才。シンプルながら、あなたがいなければ物事が成立しない不可欠な存在です。", p: {A:8, B:2, C:0}, good: 7, bad: 2 }, // good:ごま油, bad:唐辛子
-            { id: 1, t: "包容力の「お砂糖」", d: "周囲を甘く癒やすムードメーカー。トゲトゲした空気も、あなたが加わるだけで丸く収まります。", p: {A:2, B:8, C:0}, good: 3, bad: 6 }, // good:お味噌, bad:スパイス
-            { id: 2, t: "刺激的な「唐辛子」", d: "退屈な日常に火をつける情熱家。あなたのストレートな言葉は、時に誰かの目を覚まさせます。", p: {A:10, B:0, C:0}, good: 4, bad: 0 }, // good:マヨネーズ, bad:しお
-            { id: 3, t: "深みのある「お味噌」", d: "一緒にいると安心する、日本人の心。じっくり時間をかけて信頼関係を築く、温かい人情派です。", p: {A:0, B:10, C:0}, good: 1, bad: 5 }, // good:お砂糖, bad:バルサミコ酢
-            { id: 4, t: "ギャップの「マヨネーズ」", d: "どんな相手とも仲良くなれる驚異の適応力。一見マイルドですが、実は強い芯を持っています。", p: {A:5, B:5, C:0}, good: 2, bad: 9 }, // good:唐辛子, bad:トリュフ塩
-            { id: 5, t: "洗練された「バルサミコ酢」", d: "独特のセンスが光る知性派。酸いも甘いも噛み分けた、大人の余裕とこだわりを持っています。", p: {A:0, B:3, C:7}, good: 9, bad: 3 }, // good:トリュフ塩, bad:お味噌
-            { id: 6, t: "魅惑の「スパイス」", d: "一筋縄ではいかないミステリアスな人。あなたと出会った人は、その独特な魅力の虜になります。", p: {A:3, B:0, C:7}, good: 8, bad: 1 }, // good:めんつゆ, bad:お砂糖
-            { id: 7, t: "黄金の「ごま油」", d: "いるだけで場が華やぐ、香りの魔術師。あなたの行動一つで、全体の質がワンランクアップします。", p: {A:6, B:4, C:0}, good: 0, bad: 8 }, // good:しお, bad:めんつゆ
-            { id: 8, t: "万能の「めんつゆ」", d: "何をやらせても器用にこなすマルチタレント。効率的に、かつ完璧に物事を進める現代の賢者です。", p: {A:4, B:6, C:0}, good: 6, bad: 7 }, // good:スパイス, bad:ごま油
-            { id: 9, t: "孤高の「トリュフ塩」", d: "滅多に出会えない希少な感性の持ち主。特別な場面でこそ輝く、圧倒的なカリスマ性を秘めています。", p: {A:0, B:0, C:10}, good: 5, bad: 4 } // good:バルサミコ酢, bad:マヨネーズ
+            { id: 0, t: "王道の「しお」", d: "素材を引き出す天才。あなたがいなければ物事が成立しない不可欠な存在です。", p: {A:8, B:2, C:0}, good: 7, bad: 2 },
+            { id: 1, t: "包容力の「お砂糖」", d: "周囲を癒やすムードメーカー。トゲトゲした空気もあなたがいれば丸く収まります。", p: {A:2, B:8, C:0}, good: 3, bad: 6 },
+            { id: 2, t: "刺激的な「唐辛子」", d: "退屈に火をつける情熱家。あなたの言葉は時に誰かの目を覚まさせます。", p: {A:10, B:0, C:0}, good: 4, bad: 0 },
+            { id: 3, t: "深みのある「お味噌」", d: "一緒にいると安心する存在。時間をかけて信頼を築く温かい人情派です。", p: {A:0, B:10, C:0}, good: 1, bad: 5 },
+            { id: 4, t: "ギャップの「マヨネーズ」", d: "驚異の適応力。マイルドに見えて、実は誰にも譲れない強い芯を持っています。", p: {A:5, B:5, C:0}, good: 2, bad: 9 },
+            { id: 5, t: "洗練された「バルサミコ酢」", d: "センスが光る知性派。酸いも甘いも噛み分けた、大人の余裕があります。", p: {A:0, B:3, C:7}, good: 9, bad: 3 },
+            { id: 6, t: "魅惑の「スパイス」", d: "一筋縄ではいかないミステリアスな人。独特な魅力で周囲を虜にします。", p: {A:3, B:0, C:7}, good: 8, bad: 1 },
+            { id: 7, t: "黄金の「ごま油」", d: "いるだけで場が華やぐ香りの魔術師。全体の質をワンランクアップさせます。", p: {A:6, B:4, C:0}, good: 0, bad: 8 },
+            { id: 8, t: "万能の「めんつゆ」", d: "何でも器用にこなすマルチタレント。効率よく完璧に物事を進める賢者です。", p: {A:4, B:6, C:0}, good: 6, bad: 7 },
+            { id: 9, t: "孤高の「トリュフ塩」", d: "希少な感性の持ち主。特別な場面でこそ輝くカリスマ性を秘めています。", p: {A:0, B:0, C:10}, good: 5, bad: 4 }
         ];
 
         let step = 0;
@@ -281,7 +206,7 @@
         function render() {
             if (step < questions.length) {
                 const q = questions[step];
-                document.getElementById('q-num').textContent = `Step ${step + 1} / ${questions.length}`;
+                document.getElementById('q-num').textContent = `Q ${step + 1} / ${questions.length}`;
                 document.getElementById('q-text').textContent = q.q;
                 document.getElementById('optA').textContent = `A. ${q.a}`;
                 document.getElementById('optB').textContent = `B. ${q.b}`;
@@ -303,12 +228,10 @@
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('progress-bar').style.width = '100%';
 
-            // 1.8秒後に結果を表示（演出）
             setTimeout(() => {
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('result-screen').classList.remove('hidden');
 
-                // 最適なタイプを計算
                 let best = results[0];
                 let max = -1;
                 results.forEach(r => {
@@ -316,61 +239,37 @@
                     if (val > max) { max = val; best = r; }
                 });
 
-                // タイトルと説明を設定
                 document.getElementById('res-title').textContent = best.t;
                 document.getElementById('res-desc').textContent = best.d;
-
-                // レーダーチャートを描画
                 drawRadarChart(score);
 
-                // 相性を設定
                 const goodType = results[best.good].t;
                 const badType = results[best.bad].t;
                 document.getElementById('comp-good-type').textContent = goodType;
                 document.getElementById('comp-bad-type').textContent = badType;
 
-                // シェア文言の設定
-                const shareText = `【調味料性格診断】私のタイプは「${best.t}」でした！\n\n${best.d}\n\n🤝 グッド相性: ${goodType}\n💔 バッド相性: ${badType}\n\n#調味料性格診断 #性格診断`;
+                const shareText = `【調味料診断】私のタイプは「${best.t}」！\n🤝相性良：${goodType}\n💔相性悪：${badType}\n#調味料診断`;
                 const shareUrl = window.location.href;
 
-                // X (Twitter) シェア設定
                 document.getElementById('btn-x').onclick = () => {
-                    const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-                    window.open(xUrl, '_blank');
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
                 };
-
-                // LINE シェア設定
                 document.getElementById('btn-line').onclick = () => {
-                    const lineUrl = `line://msg/text/${encodeURIComponent(shareText + "\n" + shareUrl)}`;
-                    location.href = lineUrl;
+                    location.href = `line://msg/text/${encodeURIComponent(shareText + "\n" + shareUrl)}`;
                 };
-
-                // コピー機能の設定
                 document.getElementById('btn-copy').onclick = function() {
-                    const fullTextForCopy = `${shareText}\n${shareUrl}`;
-                    if (navigator.clipboard) {
-                        navigator.clipboard.writeText(fullTextForCopy).then(() => {
-                            this.textContent = "コピーしました！🤝";
-                            this.style.backgroundColor = "var(--accent-sub)";
-                            setTimeout(() => {
-                                this.textContent = "結果と相性をコピー";
-                                this.style.backgroundColor = "var(--copy-color)";
-                            }, 2000);
-                        });
-                    } else {
-                        alert("このブラウザはコピー機能に対応していません。手動でコピーしてください。");
-                    }
+                    navigator.clipboard.writeText(shareText + "\n" + shareUrl).then(() => {
+                        this.textContent = "コピー完了！";
+                        setTimeout(() => { this.textContent = "結果をコピー"; }, 2000);
+                    });
                 };
-            }, 1800);
+            }, 1500);
         }
 
-        // レーダーチャート（五角形）を描画する関数
         function drawRadarChart(finalScore) {
             const canvas = document.getElementById('chartCanvas');
             const ctx = canvas.getContext('2d');
             const container = document.getElementById('chart-container');
-
-            // 解像度を上げる処理
             const dpr = window.devicePixelRatio || 1;
             const size = container.clientWidth;
             canvas.width = size * dpr;
@@ -379,20 +278,18 @@
 
             const cx = size / 2;
             const cy = size / 2;
-            const radius = size * 0.38; // パラメータの最大半径
+            const radius = size * 0.32;
             const numParams = 5;
-            // 診断スコアからパラメータを算出する簡易ロジック
-            // 情熱(A重視), 安定(B重視), 個性(C重視), 癒やし(B重視+A少), 知性(C重視+A少)
             const params = [
-                { label: "情熱", value: Math.min(finalScore.A * 10, 100) },
-                { label: "安定", value: Math.min(finalScore.B * 8, 100) },
-                { label: "個性", value: Math.min(finalScore.C * 12, 100) },
-                { label: "癒やし", value: Math.min((finalScore.B * 7 + finalScore.A * 2), 100) },
-                { label: "知性", value: Math.min((finalScore.C * 9 + finalScore.B * 3), 100) }
+                { label: "情熱", value: Math.min(finalScore.A * 12, 100) },
+                { label: "安定", value: Math.min(finalScore.B * 10, 100) },
+                { label: "個性", value: Math.min(finalScore.C * 15, 100) },
+                { label: "癒やし", value: Math.min((finalScore.B * 8 + finalScore.A * 2), 100) },
+                { label: "知性", value: Math.min((finalScore.C * 10 + finalScore.B * 4), 100) }
             ];
 
-            // 1. 背景の五角形を描画 (グリッド)
-            ctx.strokeStyle = "#e2e8f0";
+            // 背景グリッド（薄く）
+            ctx.strokeStyle = "#f0f0f0";
             ctx.lineWidth = 1;
             for (let i = 1; i <= 5; i++) {
                 const r = radius * (i / 5);
@@ -401,40 +298,36 @@
                     const angle = (Math.PI * 2 / numParams) * j - (Math.PI / 2);
                     const x = cx + Math.cos(angle) * r;
                     const y = cy + Math.sin(angle) * r;
-                    if (j === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
+                    if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
                 }
                 ctx.closePath();
                 ctx.stroke();
             }
 
-            // 2. スコアの五角形を描画 (塗りつぶしエリア)
+            // スコア線（濃く）
             ctx.beginPath();
             params.forEach((param, j) => {
                 const angle = (Math.PI * 2 / numParams) * j - (Math.PI / 2);
-                const r = radius * (Math.max(param.value, 15) / 100); // 最低値を15にして見栄えを調整
+                const r = radius * (Math.max(param.value, 10) / 100);
                 const x = cx + Math.cos(angle) * r;
                 const y = cy + Math.sin(angle) * r;
-                if (j === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+                if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             });
             ctx.closePath();
-            ctx.fillStyle = "rgba(192, 57, 43, 0.15)"; // 塗りの色 (ボルドー・半透明)
+            ctx.fillStyle = "rgba(192, 57, 43, 0.4)"; // 塗りを濃く
             ctx.fill();
-            ctx.strokeStyle = "var(--accent-main)"; // 線の色 (ボルドー)
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = "rgba(192, 57, 43, 1)"; // 線をはっきりと
+            ctx.lineWidth = 3;
             ctx.stroke();
 
-            // 3. ラベル（文字）を描画
+            // ラベル
             ctx.fillStyle = "var(--text-main)";
-            ctx.font = "bold 13px sans-serif";
+            ctx.font = "bold 11px sans-serif";
             ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
             params.forEach((param, j) => {
                 const angle = (Math.PI * 2 / numParams) * j - (Math.PI / 2);
-                const labelR = radius + 22; // 文字の配置半径
-                const x = cx + Math.cos(angle) * labelR;
-                const y = cy + Math.sin(angle) * labelR;
+                const x = cx + Math.cos(angle) * (radius + 18);
+                const y = cy + Math.sin(angle) * (radius + 18) + 4;
                 ctx.fillText(param.label, x, y);
             });
         }
